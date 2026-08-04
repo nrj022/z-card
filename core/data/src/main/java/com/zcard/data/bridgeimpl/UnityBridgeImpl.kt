@@ -77,8 +77,8 @@ class UnityBridgeImpl @Inject constructor(): UnityBridge {
         send(Methods.UPDATE_POSITION, UnityMapper.toUpdatePositionDto(elementId, posX, posY, posZ))
     }
 
-    override fun updateRotation(elementId: Long, rotX: Float, rotY: Float, rotZ: Float, rotW: Float) {
-        send(Methods.UPDATE_ROTATION, UnityMapper.toUpdateRotationDto(elementId, rotX, rotY, rotZ, rotW))
+    override fun updateRotation(elementId: Long, quatX: Float, quatY: Float, quatZ: Float, quatW: Float) {
+        send(Methods.UPDATE_ROTATION, UnityMapper.toUpdateRotationDto(elementId, quatX, quatY, quatZ, quatW))
     }
 
     override fun updateScale(elementId: Long, scale: Int) {

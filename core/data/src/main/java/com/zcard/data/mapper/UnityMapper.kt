@@ -15,6 +15,10 @@ import com.zcard.domain.model.RgbaColor
 import com.zcard.domain.model.TextElement
 
 object UnityMapper {
+
+    private fun toQuaternionDto(quatX: Float, quatY: Float, quatZ: Float, quatW: Float): QuaternionDto =
+        QuaternionDto(x = quatY, y = quatX, z = -quatZ, w = quatW)
+
     fun toSceneDto(objects: List<CardElementWithAssetKeys>, texts: List<TextElement>): SceneDto =
         SceneDto(
             objects = objects.map {
@@ -25,6 +29,12 @@ object UnityMapper {
                         x = it.cardElement.posX,
                         y = it.cardElement.posY,
                         z = it.cardElement.posZ
+                    ),
+                    rotation = toQuaternionDto(
+                        quatX = it.cardElement.quatX,
+                        quatY = it.cardElement.quatY,
+                        quatZ = it.cardElement.quatZ,
+                        quatW = it.cardElement.quatW
                     ),
                     scale = it.cardElement.scale
                 )
@@ -65,6 +75,7 @@ object UnityMapper {
             id = "$elementId",
             prefabName = unityKey,
             position = Vector3Dto(element.posX, element.posY, element.posZ),
+            rotation = toQuaternionDto(element.quatX, element.quatY, element.quatZ, element.quatW),
             scale = element.scale,
         )
 
@@ -91,10 +102,10 @@ object UnityMapper {
             value = Vector3Dto(posX, posY, posZ)
         )
 
-    fun toUpdateRotationDto(elementId: Long, rotX: Float, rotY: Float, rotZ: Float, rotW: Float): UpdateDto<QuaternionDto> =
+    fun toUpdateRotationDto(elementId: Long, quatX: Float, quatY: Float, quatZ: Float, quatW: Float): UpdateDto<QuaternionDto> =
         UpdateDto(
             id = "$elementId",
-            value = QuaternionDto(x = rotY, y = rotX, z = -rotZ, w = rotW)
+            value = toQuaternionDto(quatX, quatY, quatZ, quatW)
         )
 
     fun toUpdateScaleDto(elementId: Long, scale: Int): UpdateDto<Int> =

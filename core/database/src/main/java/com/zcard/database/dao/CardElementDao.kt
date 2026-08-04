@@ -61,8 +61,12 @@ interface CardElementDao {
         """)
     suspend fun getObjectWithAssetKeys(elementId: Long): CardElementWithAssetKeysDto
 
-    @Query("UPDATE card_elements SET posX = :posX, posY = :posY, posZ = :posZ, scale = :scale WHERE elementId = :elementId")
-    suspend fun updateElementTransform(elementId: Long, posX: Float, posY: Float, posZ: Float, scale: Int): Int
+    @Query("""
+        UPDATE card_elements
+        SET posX = :posX, posY = :posY, posZ = :posZ, quatX = :quatX, quatY = :quatY, quatZ = :quatZ, quatW = :quatW, scale = :scale
+        WHERE elementId = :elementId
+        """)
+    suspend fun updateElementTransform(elementId: Long, posX: Float, posY: Float, posZ: Float, quatX: Float, quatY: Float, quatZ: Float, quatW: Float, scale: Int): Int
 
     @Query("""
         UPDATE card_elements 

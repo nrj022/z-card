@@ -35,10 +35,10 @@ interface UnityBridge {
 
     fun updateRotation(
         elementId: Long,
-        rotX: Float,
-        rotY: Float,
-        rotZ: Float,
-        rotW: Float,
+        quatX: Float,
+        quatY: Float,
+        quatZ: Float,
+        quatW: Float,
     )
 
     fun updateScale(elementId: Long, scale: Int)

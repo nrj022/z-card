@@ -17,9 +17,11 @@ data class CardElementEntity(
     val posY: Float,
     val posZ: Float = 0f,
 
-    val rotX: Int = 0,
-    val rotY: Int = 0,
-    val rotZ: Int = 0,
+    // Quaternion (identity: 0,0,0,1) — Android 좌표계 기준
+    val quatX: Float = 0f,
+    val quatY: Float = 0f,
+    val quatZ: Float = 0f,
+    val quatW: Float = 1f,
 
     val scale: Int = 1,
 
