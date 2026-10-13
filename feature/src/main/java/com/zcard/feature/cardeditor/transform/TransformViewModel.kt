@@ -63,7 +63,7 @@ class TransformViewModel @Inject constructor(
                         posX = obj.cardElement.posX,
                         posY = obj.cardElement.posY,
                         posZ = obj.cardElement.posZ,
-                        rotation = Quaternion(obj.cardElement.quatX, obj.cardElement.quatY, obj.cardElement.quatZ, obj.cardElement.quatW),
+                        rotation = Quaternion(obj.cardElement.quatX, obj.cardElement.quatY, obj.cardElement.quatZ, obj.cardElement.quatW).normalized(),
                         scale = obj.cardElement.scale
                     )
                     _elementId = obj.cardElement.elementId
@@ -115,7 +115,8 @@ class TransformViewModel @Inject constructor(
 
     private fun handleRotateObject(rotation: Rotation) {
         val elementId = _elementId ?: return
-        val updatedRot = Quaternion.euler(rotation).times(_dragStartQuaternion)
+        // 월드(화면) 기준 회전: 드래그 시작 자세에 delta를 앞에서 곱한다
+        val updatedRot = (Quaternion.euler(rotation) * _dragStartQuaternion).normalized()
 
         _transformState.update { it.copy(tempTransform = it.tempTransform.copy(rotation = updatedRot)) }
 

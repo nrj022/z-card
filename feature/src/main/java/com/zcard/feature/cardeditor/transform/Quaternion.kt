@@ -12,6 +12,19 @@ data class Quaternion(val x: Float, val y: Float, val z: Float, val w: Float) {
         w*q.w - x*q.x - y*q.y - z*q.z
     )
 
+    // 단위 쿼터니언으로 정규화 — 반복 곱셈의 float 오차 누적 방지
+    // q와 -q는 같은 회전이므로 w ≥ 0으로 부호를 통일한다
+    fun normalized(): Quaternion {
+        val n = sqrt(x*x + y*y + z*z + w*w)
+        if (n < 1e-6f) return identity  // (0,0,0,0) 등 유효하지 않은 값 방어
+        val s = if (w < 0) -1f / n else 1f / n
+        return Quaternion(x*s, y*s, z*s, w*s)
+    }
+
+    // 같은 회전인지 오차 허용 비교 (q와 -q 동일 취급). eps 1e-5 ≈ 0.5°
+    fun isSameRotation(other: Quaternion, eps: Float = 1e-5f): Boolean =
+        abs(x*other.x + y*other.y + z*other.z + w*other.w) > 1f - eps
+
     // Unity YXZ 역변환 (Quaternion → Euler degrees)
     fun toEuler(): Rotation {
         val qx = x.toDouble(); val qy = y.toDouble()

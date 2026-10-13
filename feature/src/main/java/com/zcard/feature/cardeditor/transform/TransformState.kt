@@ -14,7 +14,7 @@ data class TransformState(
     val transformToggleType: TransformType = TransformType.ROTATION,
 ) {
     val hasPendingTransform: Boolean
-        get() = initialTransform != tempTransform
+        get() = !initialTransform.isApproximately(tempTransform)
 
     enum class Axis { NONE, X, Y, Z }
 
