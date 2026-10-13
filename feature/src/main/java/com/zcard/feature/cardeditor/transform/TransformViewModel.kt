@@ -63,6 +63,7 @@ class TransformViewModel @Inject constructor(
                         posX = obj.cardElement.posX,
                         posY = obj.cardElement.posY,
                         posZ = obj.cardElement.posZ,
+                        rotation = Quaternion(obj.cardElement.quatX, obj.cardElement.quatY, obj.cardElement.quatZ, obj.cardElement.quatW),
                         scale = obj.cardElement.scale
                     )
                     _elementId = obj.cardElement.elementId
@@ -75,6 +76,7 @@ class TransformViewModel @Inject constructor(
                             tempTransform = transform,
                         )
                     }
+                    unityBridge.updateRotation(obj.cardElement.elementId, transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w)
                 }.onFailure { e ->
                     Log.e(TAG, "handleInit: $e")
                     _transformSideEffect.trySend(TransformSideEffect.ToastMessage(R.string.transform_msg_fail_load_object))
@@ -94,11 +96,10 @@ class TransformViewModel @Inject constructor(
     private fun handleMoveObject(direction: Direction) {
         val elementId = _elementId ?: return
         val temp = _transformState.value.tempTransform
-        val updated = ElementTransform(
+        val updated = temp.copy(
             posX = temp.posX + direction.dx,
             posY = temp.posY + direction.dy,
             posZ = temp.posZ + direction.dz,
-            scale = temp.scale
         )
 
         _transformState.update {
@@ -207,6 +208,10 @@ class TransformViewModel @Inject constructor(
                 posX = temp.posX,
                 posY = temp.posY,
                 posZ = temp.posZ,
+                quatX = temp.rotation.x,
+                quatY = temp.rotation.y,
+                quatZ = temp.rotation.z,
+                quatW = temp.rotation.w,
                 scale = temp.scale
             ).onSuccess {
                 _transformState.update {
@@ -225,6 +230,7 @@ class TransformViewModel @Inject constructor(
         val initial = _transformState.value.initialTransform
 
         unityBridge.updatePosition(elementId, initial.posX, initial.posY, initial.posZ)
+        unityBridge.updateRotation(elementId, initial.rotation.x, initial.rotation.y, initial.rotation.z, initial.rotation.w)
         unityBridge.updateScale(elementId, initial.scale)
     }
 }
