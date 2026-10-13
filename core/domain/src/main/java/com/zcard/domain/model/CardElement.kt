@@ -14,7 +14,7 @@ data class CardElement(
     val posY: Float = Random.nextInt(-20, 21) / 10f,
     val posZ: Float = Random.nextInt(-10, 11) / 10f,
 
-    // Quaternion (identity: 0,0,0,1) — Android 좌표계 기준
+    // Quaternion (identity: 0,0,0,1) — Unity 좌표계(transform.rotation) 기준
     val quatX: Float = 0f,
     val quatY: Float = 0f,
     val quatZ: Float = 0f,

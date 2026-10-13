@@ -16,8 +16,9 @@ import com.zcard.domain.model.TextElement
 
 object UnityMapper {
 
+    // DB 쿼터니언은 Unity 좌표계(transform.rotation) 기준이므로 변환 없이 전달
     private fun toQuaternionDto(quatX: Float, quatY: Float, quatZ: Float, quatW: Float): QuaternionDto =
-        QuaternionDto(x = quatY, y = quatX, z = -quatZ, w = quatW)
+        QuaternionDto(x = quatX, y = quatY, z = quatZ, w = quatW)
 
     fun toSceneDto(objects: List<CardElementWithAssetKeys>, texts: List<TextElement>): SceneDto =
         SceneDto(
