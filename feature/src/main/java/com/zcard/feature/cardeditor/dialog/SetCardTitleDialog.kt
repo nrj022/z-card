@@ -15,8 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zcard.feature.R
 import com.zcard.designsystem.component.BaseDialog
-import com.zcard.designsystem.theme.Gray
-import com.zcard.designsystem.theme.White
 
 @Composable
 fun SetCardTitleDialog(
@@ -44,7 +42,7 @@ fun SetCardTitleDialog(
                 Text(
                     text = stringResource(R.string.editor_dialog_placeholder_card_title),
                     style = MaterialTheme.typography.labelSmall,
-                    color = White
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             singleLine = true,
@@ -53,8 +51,8 @@ fun SetCardTitleDialog(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
-                unfocusedContainerColor = Gray,
-                focusedContainerColor = Gray
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest
             )
         )
     }
