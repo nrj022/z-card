@@ -26,7 +26,7 @@ fun BaseDialog(
 ) {
     AlertDialog(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         title = {
             Text(
                 modifier = Modifier.fillMaxWidth(),
