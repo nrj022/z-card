@@ -34,9 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zcard.domain.model.CardElementWithAssetKeys
-import com.zcard.designsystem.theme.Gray
-import com.zcard.designsystem.theme.SoftBlack
-import com.zcard.designsystem.theme.White
 import com.zcard.domain.model.Asset
 import com.zcard.feature.cardeditor.component.BaseTabs
 import com.zcard.feature.cardeditor.util.toBase62
@@ -125,7 +122,7 @@ internal fun CardEditorContent(
     onBackgroundClicked: (Long) -> Unit = {},
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().background(White)
+        modifier = modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surface)
     ) {
         // "3D Object", "Background" 토글 및 "NEXT" 버튼이 있는 헤더
         ControlHeader(
@@ -185,12 +182,13 @@ private fun ControlHeader(
             Text(
                 text = stringResource(R.string.editor_button_add_text),
                 style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface
             )
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
                 modifier = Modifier.size(14.dp),
-                tint = SoftBlack
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
     }
@@ -224,7 +222,7 @@ private fun SpawnedObjectRow(
                         .size(60.dp)
                         .border(
                             2.dp,
-                            if (element.cardElement.elementId == selectedItemIndex) SoftBlack else Gray,
+                            if (element.cardElement.elementId == selectedItemIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
                             RoundedCornerShape(10.dp)
                         )
                         .clip(RoundedCornerShape(10.dp))
@@ -258,7 +256,7 @@ private fun SpawnedObjectRow(
                         ) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(24.dp),
-                                color = SoftBlack,
+                                color = Color(0xFF2F2F2F),
                                 strokeWidth = 2.dp,
                             )
                         }
@@ -290,7 +288,7 @@ private fun ObjectClickableGrid(assets: List<Asset>, onItemClicked: (Asset) -> U
                     .aspectRatio(1f)
                     .fillMaxSize()
                     .clip(RoundedCornerShape(16.dp))
-                    .border(2.dp, Gray, RoundedCornerShape(16.dp))
+                    .border(2.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(16.dp))
                     .clickable { onItemClicked(asset) }
             )
         }
@@ -315,7 +313,7 @@ private fun BackgroundSelectableGrid(assets: List<Asset>, selectedItemIndex: Lon
                     .aspectRatio(1f) // 1:1 비율 유지
                     .border(
                         2.dp,
-                        if (asset.assetId == selectedItemIndex) SoftBlack else Gray,
+                        if (asset.assetId == selectedItemIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
                         RoundedCornerShape(16.dp)
                     )
                     .clip(RoundedCornerShape(16.dp))
