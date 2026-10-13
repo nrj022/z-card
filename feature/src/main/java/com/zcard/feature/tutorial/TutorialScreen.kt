@@ -35,9 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zcard.designsystem.theme.DimGray
-import com.zcard.designsystem.theme.Gray
-import com.zcard.designsystem.theme.Orange
 import com.zcard.designsystem.theme.ZCardTheme
 import com.zcard.feature.R
 
@@ -107,7 +104,7 @@ fun TutorialContent(
             horizontalArrangement = Arrangement.Center
         ) {
             repeat(pagerState.pageCount) { iteration ->
-                val color = if (pagerState.currentPage == iteration) Orange else Gray
+                val color = if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outlineVariant
 
                 Box(
                     modifier = Modifier
@@ -165,7 +162,7 @@ fun TutorialCover() {
         Text(
             text = stringResource(R.string.tutorial_text_tagline),
             style = MaterialTheme.typography.labelSmall,
-            color = DimGray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
