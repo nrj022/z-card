@@ -43,6 +43,7 @@ object DatabaseModule {
         )
         .enableMultiInstanceInvalidation()
         .addCallback(AppDatabaseCallback(assetDaoProvider, prefs))
+        .addMigrations(MIGRATION_3_4)
         .build()
     }
 

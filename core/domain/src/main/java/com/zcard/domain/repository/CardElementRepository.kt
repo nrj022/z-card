@@ -24,7 +24,7 @@ interface CardElementRepository {
 
     suspend fun getObjectWithAssetKeys(elementId: Long): Result<CardElementWithAssetKeys>
 
-    suspend fun updateElementTransform(cardId: Long, elementId: Long, posX: Float, posY: Float, posZ: Float, scale: Int): Result<Int>
+    suspend fun updateElementTransform(cardId: Long, elementId: Long, posX: Float, posY: Float, posZ: Float, quatX: Float, quatY: Float, quatZ: Float, quatW: Float, scale: Int): Result<Int>
 
     suspend fun updateTextElement(cardId: Long, elementId: Long, textAttributes: TextAttributes, posX: Float, posY: Float, posZ: Float): Result<Int>
 }

@@ -26,6 +26,7 @@ class UnityBridgeImpl @Inject constructor(): UnityBridge {
         const val CREATE_TEXT = "CreateText"
 
         const val UPDATE_POSITION = "UpdatePosition"
+        const val UPDATE_ROTATION = "UpdateRotation"
         const val UPDATE_SCALE = "UpdateScale"
         const val UPDATE_FONT_SIZE = "UpdateFontSize"
         const val UPDATE_TEXT_COLOR = "UpdateTextColor"
@@ -74,6 +75,10 @@ class UnityBridgeImpl @Inject constructor(): UnityBridge {
 
     override fun updatePosition(elementId: Long, posX: Float, posY: Float, posZ: Float) {
         send(Methods.UPDATE_POSITION, UnityMapper.toUpdatePositionDto(elementId, posX, posY, posZ))
+    }
+
+    override fun updateRotation(elementId: Long, quatX: Float, quatY: Float, quatZ: Float, quatW: Float) {
+        send(Methods.UPDATE_ROTATION, UnityMapper.toUpdateRotationDto(elementId, quatX, quatY, quatZ, quatW))
     }
 
     override fun updateScale(elementId: Long, scale: Int) {

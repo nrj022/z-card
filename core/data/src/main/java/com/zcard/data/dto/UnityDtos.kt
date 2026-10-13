@@ -11,6 +11,14 @@ data class Vector3Dto(
 )
 
 @Serializable
+data class QuaternionDto(
+    val x: Float,
+    val y: Float,
+    val z: Float,
+    val w: Float,
+)
+
+@Serializable
 data class ColorDto(
     val r: Float,
     val g: Float,
@@ -37,6 +45,7 @@ data class ObjectDto(
     val id: String,
     val prefabName: String,
     val position: Vector3Dto, // Unity: {"x":0.0, "y":0.0, "z":0.0}
+    val rotation: QuaternionDto,
     val scale: Int
 )
 

@@ -111,11 +111,11 @@ class CardElementRepositoryImpl @Inject constructor(
             cardElementDao.getObjectWithAssetKeys(elementId).toDomain()
         }
 
-    override suspend fun updateElementTransform(cardId: Long, elementId: Long, posX: Float, posY: Float, posZ: Float, scale: Int): Result<Int> =
+    override suspend fun updateElementTransform(cardId: Long, elementId: Long, posX: Float, posY: Float, posZ: Float, quatX: Float, quatY: Float, quatZ: Float, quatW: Float, scale: Int): Result<Int> =
         ioCatching {
             db.withTransaction {
                 cardDao.refreshUpdatedAt(cardId)
-                cardElementDao.updateElementTransform(elementId, posX, posY, posZ, scale)
+                cardElementDao.updateElementTransform(elementId, posX, posY, posZ, quatX, quatY, quatZ, quatW, scale)
             }
         }
 

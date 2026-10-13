@@ -2,6 +2,7 @@ package com.zcard.data.mapper
 
 import com.zcard.data.dto.ColorDto
 import com.zcard.data.dto.ObjectDto
+import com.zcard.data.dto.QuaternionDto
 import com.zcard.data.dto.ResetSceneDto
 import com.zcard.data.dto.SceneDto
 import com.zcard.data.dto.TextDto
@@ -14,6 +15,11 @@ import com.zcard.domain.model.RgbaColor
 import com.zcard.domain.model.TextElement
 
 object UnityMapper {
+
+    // DB 쿼터니언은 Unity 좌표계(transform.rotation) 기준이므로 변환 없이 전달
+    private fun toQuaternionDto(quatX: Float, quatY: Float, quatZ: Float, quatW: Float): QuaternionDto =
+        QuaternionDto(x = quatX, y = quatY, z = quatZ, w = quatW)
+
     fun toSceneDto(objects: List<CardElementWithAssetKeys>, texts: List<TextElement>): SceneDto =
         SceneDto(
             objects = objects.map {
@@ -24,6 +30,12 @@ object UnityMapper {
                         x = it.cardElement.posX,
                         y = it.cardElement.posY,
                         z = it.cardElement.posZ
+                    ),
+                    rotation = toQuaternionDto(
+                        quatX = it.cardElement.quatX,
+                        quatY = it.cardElement.quatY,
+                        quatZ = it.cardElement.quatZ,
+                        quatW = it.cardElement.quatW
                     ),
                     scale = it.cardElement.scale
                 )
@@ -64,6 +76,7 @@ object UnityMapper {
             id = "$elementId",
             prefabName = unityKey,
             position = Vector3Dto(element.posX, element.posY, element.posZ),
+            rotation = toQuaternionDto(element.quatX, element.quatY, element.quatZ, element.quatW),
             scale = element.scale,
         )
 
@@ -88,6 +101,12 @@ object UnityMapper {
         UpdateDto(
             id = "$elementId",
             value = Vector3Dto(posX, posY, posZ)
+        )
+
+    fun toUpdateRotationDto(elementId: Long, quatX: Float, quatY: Float, quatZ: Float, quatW: Float): UpdateDto<QuaternionDto> =
+        UpdateDto(
+            id = "$elementId",
+            value = toQuaternionDto(quatX, quatY, quatZ, quatW)
         )
 
     fun toUpdateScaleDto(elementId: Long, scale: Int): UpdateDto<Int> =
