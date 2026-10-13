@@ -28,6 +28,7 @@ class TransformViewModel @Inject constructor(
     // handleInit의 onSuccess에서만 함께 설정됨 — non-null이면 DB 로드 완료 + tempTransform 초기화 보장
     private var _elementId: Long? = null
     private var _cardId: Long? = null
+    private var _dragStartQuaternion: Quaternion = Quaternion.identity
 
     private val _transformState = MutableStateFlow(TransformState())
     val transformState: StateFlow<TransformState> = _transformState
@@ -38,7 +39,10 @@ class TransformViewModel @Inject constructor(
     fun onIntent(intent: TransformIntent) {
         when (intent) {
             is TransformIntent.Init -> handleInit(intent.elementId)
+            is TransformIntent.ToggleTransformType -> handleToggleTransformType()
             is TransformIntent.MoveObject -> handleMoveObject(intent.direction)
+            is TransformIntent.StartRotationDrag -> handleStartRotationDrag()
+            is TransformIntent.RotateObject -> handleRotateObject(intent.rotation)
             is TransformIntent.ChangeScale -> handleChangeScale(intent.newScale)
             is TransformIntent.ResetTransform -> handleResetTransform()
             is TransformIntent.ToggleCameraFocus -> handleToggleCameraFocus()
@@ -59,6 +63,7 @@ class TransformViewModel @Inject constructor(
                         posX = obj.cardElement.posX,
                         posY = obj.cardElement.posY,
                         posZ = obj.cardElement.posZ,
+                        rotation = Quaternion(obj.cardElement.quatX, obj.cardElement.quatY, obj.cardElement.quatZ, obj.cardElement.quatW).normalized(),
                         scale = obj.cardElement.scale
                     )
                     _elementId = obj.cardElement.elementId
@@ -71,6 +76,7 @@ class TransformViewModel @Inject constructor(
                             tempTransform = transform,
                         )
                     }
+                    unityBridge.updateRotation(obj.cardElement.elementId, transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w)
                 }.onFailure { e ->
                     Log.e(TAG, "handleInit: $e")
                     _transformSideEffect.trySend(TransformSideEffect.ToastMessage(R.string.transform_msg_fail_load_object))
@@ -81,14 +87,19 @@ class TransformViewModel @Inject constructor(
 
     // ── 트랜스폼 조작 ──────────────────────────────────────────────────────────
 
+    private fun handleToggleTransformType() {
+        _transformState.update {
+            it.copy(transformToggleType = it.transformToggleType.toggled())
+        }
+    }
+
     private fun handleMoveObject(direction: Direction) {
         val elementId = _elementId ?: return
         val temp = _transformState.value.tempTransform
-        val updated = ElementTransform(
+        val updated = temp.copy(
             posX = temp.posX + direction.dx,
             posY = temp.posY + direction.dy,
             posZ = temp.posZ + direction.dz,
-            scale = temp.scale
         )
 
         _transformState.update {
@@ -96,6 +107,20 @@ class TransformViewModel @Inject constructor(
         }
 
         unityBridge.updatePosition(elementId, updated.posX, updated.posY, updated.posZ)
+    }
+
+    private fun handleStartRotationDrag() {
+        _dragStartQuaternion = _transformState.value.tempTransform.rotation
+    }
+
+    private fun handleRotateObject(rotation: Rotation) {
+        val elementId = _elementId ?: return
+        // 월드(화면) 기준 회전: 드래그 시작 자세에 delta를 앞에서 곱한다
+        val updatedRot = (Quaternion.euler(rotation) * _dragStartQuaternion).normalized()
+
+        _transformState.update { it.copy(tempTransform = it.tempTransform.copy(rotation = updatedRot)) }
+
+        unityBridge.updateRotation(elementId, updatedRot.x, updatedRot.y, updatedRot.z, updatedRot.w)
     }
 
     private fun handleChangeScale(newScale: Int) {
@@ -184,6 +209,10 @@ class TransformViewModel @Inject constructor(
                 posX = temp.posX,
                 posY = temp.posY,
                 posZ = temp.posZ,
+                quatX = temp.rotation.x,
+                quatY = temp.rotation.y,
+                quatZ = temp.rotation.z,
+                quatW = temp.rotation.w,
                 scale = temp.scale
             ).onSuccess {
                 _transformState.update {
@@ -202,6 +231,7 @@ class TransformViewModel @Inject constructor(
         val initial = _transformState.value.initialTransform
 
         unityBridge.updatePosition(elementId, initial.posX, initial.posY, initial.posZ)
+        unityBridge.updateRotation(elementId, initial.rotation.x, initial.rotation.y, initial.rotation.z, initial.rotation.w)
         unityBridge.updateScale(elementId, initial.scale)
     }
 }
