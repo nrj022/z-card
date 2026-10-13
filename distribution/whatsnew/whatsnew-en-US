@@ -1,8 +1,7 @@
-v1.8.0 Updates
-Text editing and card sharing just got a lot better!
-- 3 new multilingual fonts added: HiMelody, Diphylleia, and ChironGoRoundTC
-- A dedicated text editing screen makes it easier to adjust font, size, and color
-- The card sharing screen is improved — offline detection now shows a helpful message
-- You can cancel card export mid-way with a cancel button
+v1.9.0 Updates
+You can now rotate objects in any direction!
+- Drag the rotation gizmo on the object adjustment screen to rotate freely along the X, Y, and Z axes
+- Switch between move and rotate modes with a single tap
+- Rotations are saved to your card just as you set them
 
 We recommend keeping your app up to date for the best experience :)
