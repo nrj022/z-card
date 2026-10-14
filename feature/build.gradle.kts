@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -37,6 +38,11 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+    }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }
 
@@ -79,6 +85,10 @@ dependencies {
     testImplementation(libs.mockk) // Repository mocking
     testImplementation(libs.turbine) // Flow 테스트
     testImplementation(kotlin("test"))
+    testImplementation(libs.robolectric) // 스크린샷 테스트
+    testImplementation(libs.roborazzi)
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
