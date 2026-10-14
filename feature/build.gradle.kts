@@ -46,6 +46,16 @@ android {
     }
 }
 
+// 스크린샷 테스트는 Roborazzi 태스크(record/compare/verify) 또는 roborazzi.test.* 속성 지정 시에만 실행
+val runScreenshotTests = gradle.startParameter.taskNames.any { it.contains("Roborazzi", ignoreCase = true) } ||
+    providers.gradlePropertiesPrefixedBy("roborazzi.test").get().isNotEmpty()
+
+tasks.withType<Test>().configureEach {
+    if (!runScreenshotTests) {
+        exclude("**/screenshot/**")
+    }
+}
+
 dependencies {
 
     implementation(group="", name = "unityLibrary-release", ext = "aar")

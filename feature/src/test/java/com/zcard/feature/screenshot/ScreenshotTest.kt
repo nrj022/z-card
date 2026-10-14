@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit
  * - 기준 이미지 생성: ./gradlew :feature:recordRoborazziDebug
  * - 변경 비교:       ./gradlew :feature:compareRoborazziDebug
  * - 결과 위치:       feature/build/outputs/roborazzi
+ * - 일반 test 태스크에서는 제외되고, Roborazzi 태스크 실행 시에만 동작 (feature/build.gradle.kts 참고)
  */
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
