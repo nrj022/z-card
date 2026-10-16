@@ -10,9 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.zcard.designsystem.theme.Gray
-import com.zcard.designsystem.theme.SoftBlack
-import com.zcard.designsystem.theme.White
 
 data class BaseTabItem(
     val id: String,
@@ -23,8 +20,8 @@ fun BaseTabs(tabs: List<BaseTabItem>, selectedTabId: String, onTabSelected: (Str
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         tabs.forEach { item ->
             val isSelected = selectedTabId == item.id
-            val containerColor = if (isSelected) SoftBlack else Gray
-            val contentColor = if (isSelected) White else SoftBlack
+            val containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHighest
+            val contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
 
             Button(
                 onClick = { onTabSelected(item.id) },

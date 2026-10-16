@@ -1,5 +1,6 @@
 package com.zcard.feature.cardeditor.textedit
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -52,9 +53,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.zcard.designsystem.theme.Gray
-import com.zcard.designsystem.theme.SoftBlack
-import com.zcard.designsystem.theme.White
 import com.zcard.designsystem.theme.ZCardTheme
 import com.zcard.domain.model.TextAlignment
 import com.zcard.domain.model.TextColor
@@ -116,7 +114,7 @@ fun TextEditContent(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .background(White)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 16.dp)
             .padding(top = 12.dp)
     ) {
@@ -185,12 +183,12 @@ private fun EditorHeader(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.common_cd_back_button),
                     modifier = Modifier.size(14.dp),
-                    tint = SoftBlack
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = stringResource(R.string.text_edit_button_back),
                     style = MaterialTheme.typography.labelSmall,
-                    color = SoftBlack
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -203,12 +201,14 @@ private fun EditorHeader(
                 .height(40.dp)
                 .clip(RoundedCornerShape(10.dp)),
             value = text,
-            textStyle = MaterialTheme.typography.labelSmall,
+            textStyle = MaterialTheme.typography.labelSmall.copy(
+                color = MaterialTheme.colorScheme.onSurface,
+            ),
             onValueChange = onTextChange,
             decorationBox = { innerTextField ->
                 Box(
                     Modifier
-                        .background(Gray)
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                         .padding(horizontal = 20.dp, vertical = 8.dp),
                     contentAlignment = Alignment.CenterStart
                 ) {
@@ -216,7 +216,7 @@ private fun EditorHeader(
                         Text(
                             text = stringResource(R.string.text_edit_placeholder_text),
                             style = MaterialTheme.typography.labelSmall,
-                            color = White
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     innerTextField()
@@ -273,7 +273,7 @@ private fun AlignmentOptions(
                     modifier = Modifier.size(28.dp),
                     imageVector = align.icon(),
                     contentDescription = stringResource(R.string.text_edit_cd_align_icon, align.name),
-                    tint = if (selectedAlignment == align) SoftBlack else Gray
+                    tint = if (selectedAlignment == align) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -295,7 +295,7 @@ private fun ColorOptions(selectedColor: TextColor, onColorSelected: (TextColor) 
                     .background(Color(red = color.rgbaColor.r, green = color.rgbaColor.g, blue = color.rgbaColor.b))
                     .border(
                         width = 2.dp,
-                        color = if (selectedColor == color) SoftBlack else Gray,
+                        color = if (selectedColor == color) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
                         shape = CircleShape
                     )
                     .clickable { onColorSelected(color) }
@@ -322,11 +322,11 @@ private fun FontSizeSlider(fontSize: Float, onFontSizeChange: (Float) -> Unit) {
             valueRange = FONT_SIZE_RANGE,
             steps = FONT_SIZE_STEPS,
             colors = SliderDefaults.colors(
-                thumbColor = SoftBlack,
-                activeTrackColor = SoftBlack,
-                inactiveTrackColor = Gray,
-                activeTickColor = SoftBlack,
-                inactiveTickColor = Gray,
+                thumbColor = MaterialTheme.colorScheme.primary,
+                activeTrackColor = MaterialTheme.colorScheme.primary,
+                inactiveTrackColor = MaterialTheme.colorScheme.outlineVariant,
+                activeTickColor = MaterialTheme.colorScheme.primary,
+                inactiveTickColor = MaterialTheme.colorScheme.outlineVariant,
             )
         )
     }
@@ -361,8 +361,8 @@ private fun FontChip(font: TextFontFamily, isSelected: Boolean, fontFamily: Font
             .clip(RoundedCornerShape(10.dp))
             .clickable { onClick(font) },
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(2.dp, if (isSelected) SoftBlack else Gray),
-        colors = CardDefaults.cardColors(containerColor = White)
+        border = BorderStroke(2.dp, if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Box(
             modifier = Modifier
@@ -405,6 +405,7 @@ private fun EmptyEditorContent() {
         Text(
             text = stringResource(R.string.text_edit_content_empty_text),
             style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.weight(2f))
@@ -412,9 +413,33 @@ private fun EmptyEditorContent() {
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
-fun TextEditorPanelPreview() {
+@Preview(
+    name = "Light Mode",
+    showBackground = true,
+)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+fun TextEditorPanelEmptyPreview() {
     ZCardTheme {
         TextEditContent()
+    }
+}
+
+@Composable
+@Preview(
+    name = "Light Mode",
+    showBackground = true,
+)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+fun TextEditorPanelPreview() {
+    ZCardTheme {
+        TextEditContent(textElement = TextElement())
     }
 }

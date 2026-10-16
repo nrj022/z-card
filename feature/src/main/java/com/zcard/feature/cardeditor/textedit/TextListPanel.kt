@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.zcard.designsystem.theme.SoftBlack
-import com.zcard.designsystem.theme.White
 import com.zcard.designsystem.theme.ZCardTheme
 import com.zcard.feature.cardeditor.textedit.util.rememberFontFamilies
 
@@ -96,8 +95,8 @@ fun TextChip(
             .clip(RoundedCornerShape(10.dp))
             .clickable { onClick() },
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(2.dp, if (isSelected) White else SoftBlack),
-        colors = CardDefaults.cardColors(containerColor = SoftBlack.copy(0.3f))
+        border = BorderStroke(2.dp, if (isSelected) Color.White else Color(0xFF2F2F2F)),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF2F2F2F).copy(alpha = 0.3f))
     ) {
         Box(
             modifier = Modifier
@@ -109,7 +108,7 @@ fun TextChip(
                 text = text,
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = fontFamily,
-                color = if (isSelected) White else SoftBlack,
+                color = if (isSelected) Color.White else Color(0xFF2F2F2F),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 autoSize = TextAutoSize.StepBased(10.sp, 14.sp, stepSize = 1.sp)

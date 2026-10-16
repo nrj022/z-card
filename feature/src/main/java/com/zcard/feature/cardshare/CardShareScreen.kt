@@ -1,6 +1,7 @@
 package com.zcard.feature.cardshare
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.view.ViewGroup
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -15,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,9 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.zcard.designsystem.theme.Gray
-import com.zcard.designsystem.theme.SoftBlack
-import com.zcard.designsystem.theme.White
+import com.zcard.designsystem.theme.ZCardTheme
 import com.zcard.feature.R
 
 @Composable
@@ -77,20 +77,21 @@ internal fun CardShareContent(
 @Composable
 private fun NoNetworkScreen(onTryAgainClicked: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize().background(Gray),
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainerHighest),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = stringResource(R.string.share_text_no_internet),
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelSmall,
         )
         Spacer(modifier = Modifier.height(25.dp))
         TextButton (
             onClick = onTryAgainClicked,
             shape = MaterialTheme.shapes.extraLarge,
-            colors = ButtonDefaults.buttonColors(containerColor = White, contentColor = SoftBlack),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, contentColor = MaterialTheme.colorScheme.onSurface),
         ) {
             Text(
                 text = stringResource(R.string.share_button_try_again),
@@ -121,12 +122,12 @@ private fun TopSection(onBackClicked: () -> Unit, onHomeClicked: () -> Unit) {
 private fun BackButton(onBackClicked: () -> Unit) {
     IconButton(
         onClick = onBackClicked,
-        modifier = Modifier.background(White.copy(alpha = 0.7f), CircleShape)
+        modifier = Modifier.background(Color.White.copy(alpha = 0.7f), CircleShape)
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = stringResource(R.string.common_cd_back_button),
-            tint = SoftBlack
+            tint = Color(0xFF2F2F2F)
         )
     }
 }
@@ -135,12 +136,12 @@ private fun BackButton(onBackClicked: () -> Unit) {
 private fun HomeButton(onHomeClicked: () -> Unit) {
     IconButton(
         onClick = onHomeClicked,
-        modifier = Modifier.background(White.copy(alpha = 0.7f), CircleShape)
+        modifier = Modifier.background(Color.White.copy(alpha = 0.7f), CircleShape)
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_home),
             contentDescription = stringResource(R.string.share_cd_home_button),
-            tint = SoftBlack
+            tint = Color(0xFF2F2F2F)
         )
     }
 }
@@ -197,7 +198,7 @@ private fun CardShareWebView(cardUrl: String, isLoading: Boolean, onPageFinished
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center),
-                color = Gray
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -215,7 +216,7 @@ private fun BoxScope.ShareButton(onShareClicked: () -> Unit) {
         Button(
             onClick = onShareClicked,
             shape = MaterialTheme.shapes.extraLarge,
-            colors = ButtonDefaults.buttonColors(containerColor = White, contentColor = SoftBlack),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color(0xFF2F2F2F)),
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -224,7 +225,7 @@ private fun BoxScope.ShareButton(onShareClicked: () -> Unit) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_share),
                     contentDescription = null,
-                    tint = SoftBlack
+                    tint = Color(0xFF2F2F2F)
                 )
                 Text(
                     text = stringResource(R.string.share_button_share),
@@ -236,8 +237,19 @@ private fun BoxScope.ShareButton(onShareClicked: () -> Unit) {
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
 @Composable
 private fun CardShareScreenPreview() {
-    CardShareContent()
+    ZCardTheme {
+        CardShareContent()
+    }
 }

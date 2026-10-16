@@ -32,9 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.zcard.designsystem.theme.Gray
-import com.zcard.designsystem.theme.SoftBlack
-import com.zcard.designsystem.theme.White
 import com.zcard.designsystem.theme.ZCardTheme
 import com.zcard.feature.R
 import com.zcard.feature.cardeditor.model.Direction
@@ -89,7 +86,7 @@ fun TransformContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(White)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -142,13 +139,16 @@ private fun TopActionRow(
             Text(
                 text = stringResource(R.string.common_button_cancel),
                 style = MaterialTheme.typography.labelSmall,
-                color = SoftBlack
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
         Button(
             onClick = onToggle,
             shape = MaterialTheme.shapes.extraLarge,
-            colors = ButtonDefaults.buttonColors(containerColor = Gray, contentColor = SoftBlack),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                contentColor = MaterialTheme.colorScheme.onSurface
+            ),
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -157,7 +157,7 @@ private fun TopActionRow(
                 Icon(
                     painter = painterResource(toggleType.icon),
                     contentDescription = null,
-                    tint = SoftBlack
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = stringResource(toggleType.label),
@@ -170,7 +170,7 @@ private fun TopActionRow(
             Text(
                 text = stringResource(R.string.common_button_apply),
                 style = MaterialTheme.typography.labelSmall,
-                color = SoftBlack
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
@@ -201,6 +201,7 @@ private fun ScaleController(
         Text(
             text = scale.toString(),
             fontSize = 20.sp,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Bold
         )
 
@@ -228,8 +229,8 @@ private fun ScaleAdjustButton(
         modifier = modifier.size(48.dp),
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Gray.copy(alpha = 0.5f),
-            contentColor = SoftBlack
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.5f),
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
         contentPadding = PaddingValues(0.dp)
     ) {

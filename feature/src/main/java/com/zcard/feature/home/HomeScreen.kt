@@ -58,13 +58,9 @@ import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import androidx.compose.ui.graphics.Color
 import com.zcard.feature.R
-import com.zcard.designsystem.theme.DimGray
-import com.zcard.designsystem.theme.Gray
-import com.zcard.designsystem.theme.Red
 import com.zcard.designsystem.theme.ZCardTheme
-import com.zcard.designsystem.theme.SoftBlack
-import com.zcard.designsystem.theme.White
 import com.zcard.domain.model.CardPreview
 import com.zcard.designsystem.component.BaseDialog
 import com.zcard.feature.home.util.formatDateTime
@@ -214,7 +210,7 @@ fun PreviewGifImage(onCardClick: () -> Unit) {
             .fillMaxWidth()
             .height(220.dp)
             .clip(RoundedCornerShape(30.dp))
-            .background(Gray),
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest),
         contentAlignment = Alignment.Center
     ) {
         AsyncImage(
@@ -227,20 +223,20 @@ fun PreviewGifImage(onCardClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(SoftBlack.copy(alpha = 0.15f))
+                .background(Color.Black.copy(alpha = 0.15f))
                 .padding(horizontal = 24.dp, vertical = 20.dp),
             contentAlignment = Alignment.BottomStart
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text(
-                        color = White,
+                        color = Color.White,
                         textAlign = TextAlign.Start,
                         style = MaterialTheme.typography.labelSmall,
                         text = stringResource(R.string.home_title_design_card_sub_prompt)
                     )
                     Text(
-                        color = White,
+                        color = Color.White,
                         textAlign = TextAlign.Start,
                         style = MaterialTheme.typography.titleLarge,
                         text = stringResource(R.string.home_title_design_card_prompt)
@@ -257,10 +253,10 @@ fun CreateCardButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = ButtonColors(
-            containerColor = White,
-            contentColor = SoftBlack,
-            disabledContainerColor = Gray,
-            disabledContentColor = White
+            containerColor = Color.White,
+            contentColor = Color(0xFF2F2F2F),
+            disabledContainerColor = Color(0xFFEDEDED),
+            disabledContentColor = Color.White
         )
     ) {
         Row(
@@ -333,7 +329,7 @@ fun CardItem(cardTitle: String, updatedAt: String, thumbnailFile: File?, thumbna
             Spacer(modifier = Modifier.height(3.dp))
             Text(
                 text = updatedAt,
-                color = DimGray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.labelSmall,
                 fontSize = 8.sp
             )
@@ -352,20 +348,20 @@ fun EmptyCardSection(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(60.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_card_star),
-            tint = Gray,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
             contentDescription = stringResource(R.string.home_cd_empty_card_icon)
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = stringResource(R.string.home_text_notice_empty_card_1),
             style = MaterialTheme.typography.labelSmall,
-            color = Gray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = stringResource(R.string.home_text_notice_empty_card_2),
             style = MaterialTheme.typography.labelSmall,
-            color = Gray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(60.dp))
     }
@@ -402,7 +398,7 @@ fun CardOptionBottomSheet(
                 )
                 Text(
                     text = updatedAt,
-                    color = DimGray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall,
                     fontSize = 8.sp
                 )
@@ -436,11 +432,11 @@ fun CardOptionBottomSheet(
                     Icon(
                         modifier = Modifier.size(18.dp),
                         painter = painterResource(R.drawable.ic_delete),
-                        tint = Red,
+                        tint = MaterialTheme.colorScheme.error,
                         contentDescription = null
                     )
                     Text(
-                        color = Red,
+                        color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.labelSmall,
                         text = stringResource(R.string.home_button_delete)
                     )

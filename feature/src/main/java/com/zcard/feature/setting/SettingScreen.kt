@@ -39,9 +39,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zcard.feature.R
 import com.zcard.designsystem.theme.ZCardTheme
 import com.zcard.designsystem.component.BaseDialog
-import com.zcard.designsystem.theme.Gray
-import com.zcard.designsystem.theme.SoftBlack
-import com.zcard.designsystem.theme.White
 
 @Composable
 fun SettingScreen(viewModel: SettingViewModel = hiltViewModel()) {
@@ -113,7 +110,7 @@ fun TopBar(onBackClicked: () -> Unit = {}) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(R.string.common_cd_back_button),
-                tint = SoftBlack
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
     }
@@ -133,7 +130,7 @@ fun MenuItem(label: String = "", icon: ImageVector, onClick: () -> Unit = {}) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = SoftBlack
+            tint = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = label,
@@ -169,7 +166,7 @@ fun FeedbackDialog(
             Text(
                 text = stringResource(R.string.setting_dialog_content_feedback),
                 style = MaterialTheme.typography.labelSmall,
-                color = SoftBlack
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(16.dp))
             TextField(
@@ -184,15 +181,15 @@ fun FeedbackDialog(
                     Text(
                         text = stringResource(R.string.setting_dialog_placeholder_feedback),
                         style = MaterialTheme.typography.labelSmall,
-                        color = White
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
-                    unfocusedContainerColor = Gray,
-                    focusedContainerColor = Gray
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest
                 )
             )
         }

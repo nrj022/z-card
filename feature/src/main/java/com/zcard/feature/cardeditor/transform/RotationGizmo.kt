@@ -1,5 +1,6 @@
 package com.zcard.feature.cardeditor.transform
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -7,6 +8,7 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.drag
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,8 +22,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zcard.designsystem.theme.DimGray
-import com.zcard.designsystem.theme.White
+import com.zcard.designsystem.theme.ZCardTheme
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.hypot
@@ -68,10 +69,10 @@ fun RotationGizmo(
             .shadow(
                 elevation = 6.dp,
                 shape = CircleShape,
-                ambientColor = DimGray,
-                spotColor = DimGray
+                ambientColor = MaterialTheme.colorScheme.onSurface,
+                spotColor =  MaterialTheme.colorScheme.onSurface
             )
-            .background(White)
+            .background( MaterialTheme.colorScheme.surfaceContainerLowest)
             .clip(CircleShape),
         contentAlignment = Alignment.Center
     ) {
@@ -217,7 +218,17 @@ fun RotationGizmo(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(
+    name = "Light Mode",
+    showBackground = true,
+)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 private fun Preview() {
-    RotationGizmo()
+    ZCardTheme {
+        RotationGizmo()
+    }
 }
