@@ -46,7 +46,7 @@ fun CardShareScreen(viewModel:CardShareViewModel = hiltViewModel(), cardUrl: Str
 }
 
 @Composable
-private fun CardShareContent(
+internal fun CardShareContent(
     cardUrl: String = "",
     isLoading: Boolean = false,
     isOnline: Boolean = false,

@@ -109,7 +109,7 @@ fun CardEditorScreen(viewModel: CardEditorViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun CardEditorContent(
+internal fun CardEditorContent(
     modifier: Modifier = Modifier,
     selectedTab: CardEditorState.AssetBrowserTab = CardEditorState.AssetBrowserTab.OBJECTS,
     objectItems: List<Asset> = emptyList(),

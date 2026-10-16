@@ -34,6 +34,8 @@ material3 = "1.4.0"
 turbine = "1.2.1"
 cardview = "1.0.0"
 activity = "1.12.1"
+robolectric = "4.17"
+roborazzi = "1.60.0" # 1.61+는 Kotlin 2.3 메타데이터로 빌드되어 Kotlin 2.0.21에서 사용 불가
 
 [libraries]
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
@@ -88,6 +90,10 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 
+# Screenshot test
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -102,4 +108,5 @@ firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "fireb
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 

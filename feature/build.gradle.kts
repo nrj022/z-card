@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -37,6 +38,21 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+    }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+}
+
+// 스크린샷 테스트는 Roborazzi 태스크(record/compare/verify) 또는 roborazzi.test.* 속성 지정 시에만 실행
+val runScreenshotTests = gradle.startParameter.taskNames.any { it.contains("Roborazzi", ignoreCase = true) } ||
+    providers.gradlePropertiesPrefixedBy("roborazzi.test").get().isNotEmpty()
+
+tasks.withType<Test>().configureEach {
+    if (!runScreenshotTests) {
+        exclude("**/screenshot/**")
     }
 }
 
@@ -79,6 +95,10 @@ dependencies {
     testImplementation(libs.mockk) // Repository mocking
     testImplementation(libs.turbine) // Flow 테스트
     testImplementation(kotlin("test"))
+    testImplementation(libs.robolectric) // 스크린샷 테스트
+    testImplementation(libs.roborazzi)
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
