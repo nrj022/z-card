@@ -62,6 +62,9 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:domain"))
 
+    // Color Picker
+    implementation(libs.nrj022.compose.color.picker)
+
     // Coil for gif
     implementation(libs.coil.compose)
     implementation(libs.coil.gif)
