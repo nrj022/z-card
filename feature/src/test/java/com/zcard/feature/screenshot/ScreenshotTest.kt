@@ -12,6 +12,7 @@ import com.zcard.designsystem.theme.ZCardTheme
 import com.zcard.domain.model.Asset
 import com.zcard.domain.model.AssetType
 import com.zcard.domain.model.CardPreview
+import com.zcard.domain.model.TextElement
 import com.zcard.feature.cardeditor.CardEditorContent
 import com.zcard.feature.cardeditor.dialog.ObjectDeleteConfirmDialog
 import com.zcard.feature.cardeditor.dialog.UnsavedChangesDialog
@@ -87,10 +88,16 @@ class ScreenshotTest {
     fun card_editor_transform_dark() = captureContent(darkTheme = true) { TransformContent() }
 
     @Test
-    fun card_editor_text_edit_light() = captureContent(darkTheme = false) { TextEditContent() }
+    fun card_editor_text_edit_empty_light() = captureContent(darkTheme = false) { TextEditContent() }
 
     @Test
-    fun card_editor_text_edit_dark() = captureContent(darkTheme = true) { TextEditContent() }
+    fun card_editor_text_edit_empty_dark() = captureContent(darkTheme = true) { TextEditContent() }
+
+    @Test
+    fun card_editor_text_edit_light() = captureContent(darkTheme = false) { TextEditContent(textElement = TextElement()) }
+
+    @Test
+    fun card_editor_text_edit_dark() = captureContent(darkTheme = true) { TextEditContent(textElement = TextElement()) }
 
     @Test
     fun card_share_light() = captureContent(darkTheme = false) { CardShareContent() }
