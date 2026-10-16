@@ -1,7 +1,9 @@
 package com.zcard.feature.cardeditor
 
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zcard.feature.cardeditor.dialog.CardInfoDialog
@@ -23,9 +25,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -33,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zcard.designsystem.theme.ZCardTheme
 import com.zcard.domain.model.CardElementWithAssetKeys
 import com.zcard.domain.model.Asset
 import com.zcard.feature.cardeditor.component.BaseTabs
@@ -42,6 +50,8 @@ import com.zcard.designsystem.util.DrawableResProvider.getBgThumbByKey
 import com.zcard.feature.R
 import com.zcard.feature.cardeditor.component.BaseTabItem
 import com.zcard.feature.cardeditor.dialog.UploadCancelConfirmDialog
+import io.mhssn.colorpicker.ColorPicker
+import io.mhssn.colorpicker.ColorPickerType
 
 private const val COLUMNS = 4
 
@@ -304,6 +314,9 @@ private fun BackgroundSelectableGrid(assets: List<Asset>, selectedItemIndex: Lon
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(bottom = 16.dp)
     ) {
+        item {
+            ColorPickerButton()
+        }
         items(items = assets, key = { it.assetId }) { asset ->
             Image(
                 painter = painterResource(id = getBgThumbByKey(asset.thumbnailKey)),
@@ -323,8 +336,122 @@ private fun BackgroundSelectableGrid(assets: List<Asset>, selectedItemIndex: Lon
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
+fun ColorPickerButton(
+    modifier: Modifier = Modifier,
+    isClicked: Boolean = false,
+    selectedColor: Color = Color.White,
+    onClick: () -> Unit = {}
+) {
+    Box(
+        modifier = modifier
+            .aspectRatio(1f) // 1:1 비율 유지
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick)
+            .border(
+                2.dp,
+                if (isClicked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
+                RoundedCornerShape(16.dp)
+            )
+            .drawBehind {
+                drawRect(
+                    Brush.sweepGradient(
+                        listOf(
+                            Color.Red, Color.Yellow, Color.Green, Color.Cyan,
+                            Color.Blue, Color.Magenta, Color.Red
+                        )
+                    )
+                )
+                drawRect(
+                    Brush.radialGradient(
+                        listOf(Color.White, Color.Transparent),
+                        radius = size.minDimension / 1.6f
+                    )
+                )
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(.5f)
+                .aspectRatio(1f)
+                .shadow(
+                    elevation = 6.dp,
+                    shape = CircleShape,
+                    ambientColor = Color(0XFF2F2F2F),
+                    spotColor =  Color(0XFF2F2F2F)
+                )
+                .background(color = selectedColor)
+                .clip(CircleShape)
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun ColorPickerDialog(
+    modifier: Modifier = Modifier,
+    color: Color = Color.White,
+    onColorChange: (Color) -> Unit = {},
+    onConfirm: () -> Unit = {},
+    onDismiss: () -> Unit = {}
+) {
+    // 다이얼로그를 연 시점의 색으로만 초기화 (color는 선택 중에 계속 바뀌므로 고정)
+    val initialColor = remember { color }
+
+    AlertDialog(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        title = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // 색상 링 + 채도·밝기 슬라이더 (배경색은 불투명만 지원하므로 알파 바는 숨김)
+                ColorPicker(
+                    type = ColorPickerType.Ring(
+                        ringWidth = 16.dp,
+                        showAlphaBar = false,
+                        initialColor = initialColor
+                    ),
+                    onPickedColor = onColorChange
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = "#%06X".format(color.toArgb() and 0xFFFFFF),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(text = stringResource(R.string.common_button_select), style = MaterialTheme.typography.labelSmall)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(R.string.common_button_cancel), style = MaterialTheme.typography.labelSmall)
+            }
+        },
+        onDismissRequest = onDismiss
+    )
+}
+
+@Composable
+@Preview(
+    name = "Light Mode",
+    showBackground = true,
+    showSystemUi = true,
+)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 private fun CardCreationScreenPreview() {
-    CardEditorContent()
+    ZCardTheme {
+        CardEditorContent(selectedTab = CardEditorState.AssetBrowserTab.BACKGROUND)
+    }
 }

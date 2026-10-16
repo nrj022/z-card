@@ -6,6 +6,7 @@
     <string name="common_button_yes">Sí</string>
     <string name="common_button_no">No</string>
     <string name="common_button_apply">Aplicar</string>
+    <string name="common_button_select">Seleccionar</string>
 
     <!-- Editor Screen -->
     <string name="editor_msg_fail_load_card">No se pudo cargar la tarjeta. Por favor, inténtalo de nuevo.</string>

@@ -6,6 +6,7 @@
     <string name="common_button_yes">Yes</string>
     <string name="common_button_no">No</string>
     <string name="common_button_apply">Apply</string>
+    <string name="common_button_select">Select</string>
 
     <!-- Editor Screen -->
     <string name="editor_msg_fail_load_card">Failed to load card. Please try again.</string>

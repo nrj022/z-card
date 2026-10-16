@@ -6,6 +6,7 @@
     <string name="common_button_yes">Ja</string>
     <string name="common_button_no">Nein</string>
     <string name="common_button_apply">Anwenden</string>
+    <string name="common_button_select">Auswählen</string>
 
     <!-- Editor Screen -->
     <string name="editor_msg_fail_load_card">Karte konnte nicht geladen werden. Bitte erneut versuchen.</string>

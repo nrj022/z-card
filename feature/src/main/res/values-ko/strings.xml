@@ -6,6 +6,7 @@
     <string name="common_button_yes">네</string>
     <string name="common_button_no">아니요</string>
     <string name="common_button_apply">저장</string>
+    <string name="common_button_select">선택</string>
 
     <!-- Editor Screen -->
     <string name="editor_msg_fail_load_card">카드를 불러오지 못했어요. 다시 시도해 주세요.</string>
