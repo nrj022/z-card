@@ -12,6 +12,7 @@ data class CardEntity(
     val title: String,
     val glbFileName: String?,
     val backgroundAssetId: Long,
+    val backgroundColor: Int?,
     val isDraft: Boolean,
     val createdAt: Long,
     val updatedAt: Long,

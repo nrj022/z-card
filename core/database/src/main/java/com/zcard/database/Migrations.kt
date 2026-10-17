@@ -48,3 +48,17 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
         db.execSQL("ALTER TABLE card_elements_new RENAME TO card_elements")
     }
 }
+
+// 카드 배경 단색 지원: cards.backgroundColor(ARGB Int, 단색 배경이 아니면 null) 컬럼 추가.
+// 기존 사용자는 초기 데이터 삽입(AppDatabaseCallback)이 이미 끝난 상태라 단색 배경 에셋을 여기서 직접 추가.
+val MIGRATION_4_5 = object : Migration(4, 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE cards ADD COLUMN backgroundColor INTEGER")
+        db.execSQL(
+            """
+            INSERT OR REPLACE INTO assets (assetId, assetType, unityKey, thumbnailKey)
+            VALUES (27, 'BACKGROUND', 'bg_solid_color', 'thumb_color_picker')
+            """.trimIndent()
+        )
+    }
+}

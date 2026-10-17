@@ -6,6 +6,7 @@ data class Card(
     val title: String = "New Card",
     val glbFileName: String? = null,
     val backgroundAssetId: Long = 1,
+    val backgroundColor: Int? = null,
     val isDraft: Boolean = true,
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
