@@ -12,7 +12,8 @@ object InitialData {
             AssetEntity(assetId = 3, assetType = "BACKGROUND", unityKey = "bg_003", thumbnailKey = "thumb_bg_003"),
             AssetEntity(assetId = 4, assetType = "BACKGROUND", unityKey = "bg_004", thumbnailKey = "thumb_bg_004"),
             AssetEntity(assetId = 5, assetType = "BACKGROUND", unityKey = "bg_005", thumbnailKey = "thumb_bg_005"),
-            AssetEntity(assetId = 6, assetType = "BACKGROUND", unityKey = "bg_006", thumbnailKey = "thumb_bg_006")
+            AssetEntity(assetId = 6, assetType = "BACKGROUND", unityKey = "bg_006", thumbnailKey = "thumb_bg_006"),
+            AssetEntity(assetId = 27, assetType = "BACKGROUND", unityKey = "bg_solid_color", thumbnailKey = "thumb_color_picker"),
         )
     }
 
