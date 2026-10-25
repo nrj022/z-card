@@ -6,6 +6,7 @@ import com.zcard.domain.usecase.GenerateCardUrlUseCase
 import javax.inject.Inject
 import androidx.core.net.toUri
 import com.zcard.domain.exception.CardNotExportedException
+import com.zcard.domain.model.Asset
 
 class GenerateCardUrlUseCaseImpl @Inject constructor(
     private val cardRepository: CardRepository,
@@ -26,6 +27,12 @@ class GenerateCardUrlUseCaseImpl @Inject constructor(
             .appendQueryParameter("title", card.title)
             .appendQueryParameter("glb", glb)
             .appendQueryParameter("bg", bgFile)
+
+        if(Asset.isSolidBackground(bg.assetId)) {
+            card.backgroundColor?.let { argb ->
+                builder.appendQueryParameter("bgColor", "%06x".format(argb and 0xFFFFFF))
+            }
+        }
 
         return Result.success(builder.build().toString())
     }
