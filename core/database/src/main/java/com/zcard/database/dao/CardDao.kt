@@ -30,8 +30,8 @@ interface CardDao {
     @Query("UPDATE cards SET title = :title, updatedAt = :updatedAt WHERE cardId = :cardId")
     suspend fun updateTitle(cardId: Long, title: String, updatedAt: Long = System.currentTimeMillis()): Int
 
-    @Query("UPDATE cards SET backgroundAssetId = :backgroundAssetId, updatedAt = :updatedAt WHERE cardId = :cardId")
-    suspend fun updateBackgroundAssetId(cardId: Long, backgroundAssetId: Long, updatedAt: Long = System.currentTimeMillis()): Int
+    @Query("UPDATE cards SET backgroundAssetId = :backgroundAssetId, backgroundColor = :color, updatedAt = :updatedAt WHERE cardId = :cardId")
+    suspend fun updateBackground(cardId: Long, backgroundAssetId: Long, color: Int, updatedAt: Long = System.currentTimeMillis()): Int
 
     @Query("UPDATE cards SET glbFileName = :glbFileName, updatedAt = :updatedAt WHERE cardId = :cardId")
     suspend fun updateGlb(cardId: Long, glbFileName: String, updatedAt: Long = System.currentTimeMillis()): Int

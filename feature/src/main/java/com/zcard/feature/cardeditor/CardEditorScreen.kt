@@ -66,6 +66,7 @@ fun CardEditorScreen(viewModel: CardEditorViewModel = hiltViewModel()) {
         spawnedObjects = state.spawnedObjects,
         selectedSpawnedObject = state.selectedSpawnedObjectId,
         selectedBackground = state.selectedBackgroundId,
+        selectedColor = Color(state.backgroundColor),
         loadingObjectIds = state.loadingObjectIds,
         onTabSelected = { viewModel.onIntent(CardEditorIntent.ChangeTab(it)) },
         onAddTextClicked = { viewModel.onIntent(CardEditorIntent.EnterTextMode) },
@@ -112,6 +113,14 @@ fun CardEditorScreen(viewModel: CardEditorViewModel = hiltViewModel()) {
                 }
             )
         }
+        CardEditorState.DialogState.COLOR_PICKER -> {
+            ColorPickerDialog(
+                color = Color(state.tempBackgroundColor),
+                onColorChange = { viewModel.onIntent(CardEditorIntent.ChangeBackgroundColor(it.toArgb())) },
+                onConfirm = { viewModel.onIntent(CardEditorIntent.SelectBackgroundColor(it.toArgb())) },
+                onDismiss = { viewModel.onIntent(CardEditorIntent.DismissColorSelector) }
+            )
+        }
     }
 }
 
@@ -124,6 +133,7 @@ internal fun CardEditorContent(
     spawnedObjects: List<CardElementWithAssetKeys> = emptyList(),
     selectedSpawnedObject: Long? = null,
     selectedBackground: Long = 1,
+    selectedColor: Color = Color.White,
     loadingObjectIds: Set<Long> = emptySet(),
     onTabSelected: (CardEditorState.AssetBrowserTab) -> Unit = {},
     onAddTextClicked: () -> Unit = {},
@@ -158,6 +168,7 @@ internal fun CardEditorContent(
             BackgroundSelectableGrid(
                 assets = backgroundItems,
                 selectedItemIndex = selectedBackground,
+                selectedColor = selectedColor,
                 onItemClicked = { onBackgroundClicked(it) }
             )
         }
@@ -298,7 +309,11 @@ private fun ObjectClickableGrid(assets: List<Asset>, onItemClicked: (Asset) -> U
                     .aspectRatio(1f)
                     .fillMaxSize()
                     .clip(RoundedCornerShape(16.dp))
-                    .border(2.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(16.dp))
+                    .border(
+                        2.dp,
+                        MaterialTheme.colorScheme.outlineVariant,
+                        RoundedCornerShape(16.dp)
+                    )
                     .clickable { onItemClicked(asset) }
             )
         }
@@ -306,7 +321,12 @@ private fun ObjectClickableGrid(assets: List<Asset>, onItemClicked: (Asset) -> U
 }
 
 @Composable
-private fun BackgroundSelectableGrid(assets: List<Asset>, selectedItemIndex: Long, onItemClicked: (Long) -> Unit) {
+private fun BackgroundSelectableGrid(
+    assets: List<Asset>,
+    selectedItemIndex: Long,
+    selectedColor: Color = Color.White,
+    onItemClicked: (Long) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(COLUMNS),
         modifier = Modifier.padding(horizontal = 16.dp),
@@ -314,24 +334,29 @@ private fun BackgroundSelectableGrid(assets: List<Asset>, selectedItemIndex: Lon
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(bottom = 16.dp)
     ) {
-        item {
-            ColorPickerButton()
-        }
         items(items = assets, key = { it.assetId }) { asset ->
-            Image(
-                painter = painterResource(id = getBgThumbByKey(asset.thumbnailKey)),
-                contentScale = ContentScale.Crop,
-                contentDescription = stringResource(R.string.editor_cd_asset),
-                modifier = Modifier
-                    .aspectRatio(1f) // 1:1 비율 유지
-                    .border(
-                        2.dp,
-                        if (asset.assetId == selectedItemIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
-                        RoundedCornerShape(16.dp)
-                    )
-                    .clip(RoundedCornerShape(16.dp))
-                    .clickable { onItemClicked(asset.assetId) }
-            )
+            if(Asset.isSolidBackground(asset.assetId)) {
+                ColorPickerButton(
+                    selectedColor = selectedColor,
+                    onClick = { onItemClicked(asset.assetId) },
+                    isClicked = selectedItemIndex == asset.assetId,
+                )
+            } else {
+                Image(
+                    painter = painterResource(id = getBgThumbByKey(asset.thumbnailKey)),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = stringResource(R.string.editor_cd_asset),
+                    modifier = Modifier
+                        .aspectRatio(1f) // 1:1 비율 유지
+                        .border(
+                            2.dp,
+                            if (asset.assetId == selectedItemIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
+                            RoundedCornerShape(16.dp)
+                        )
+                        .clip(RoundedCornerShape(16.dp))
+                        .clickable { onItemClicked(asset.assetId) }
+                )
+            }
         }
     }
 }
@@ -339,8 +364,8 @@ private fun BackgroundSelectableGrid(assets: List<Asset>, selectedItemIndex: Lon
 @Composable
 fun ColorPickerButton(
     modifier: Modifier = Modifier,
-    isClicked: Boolean = false,
     selectedColor: Color = Color.White,
+    isClicked: Boolean = false,
     onClick: () -> Unit = {}
 ) {
     Box(
@@ -379,7 +404,7 @@ fun ColorPickerButton(
                     elevation = 6.dp,
                     shape = CircleShape,
                     ambientColor = Color(0XFF2F2F2F),
-                    spotColor =  Color(0XFF2F2F2F)
+                    spotColor = Color(0XFF2F2F2F)
                 )
                 .background(color = selectedColor)
                 .clip(CircleShape)
@@ -393,7 +418,7 @@ fun ColorPickerDialog(
     modifier: Modifier = Modifier,
     color: Color = Color.White,
     onColorChange: (Color) -> Unit = {},
-    onConfirm: () -> Unit = {},
+    onConfirm: (Color) -> Unit = {},
     onDismiss: () -> Unit = {}
 ) {
     // 다이얼로그를 연 시점의 색으로만 초기화 (color는 선택 중에 계속 바뀌므로 고정)
@@ -425,7 +450,7 @@ fun ColorPickerDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
+            TextButton(onClick = { onConfirm(color) }) {
                 Text(text = stringResource(R.string.common_button_select), style = MaterialTheme.typography.labelSmall)
             }
         },

@@ -81,9 +81,9 @@ class CardRepositoryImpl @Inject constructor(
             cardDao.updateTitle(cardId, title)
         }
 
-    override suspend fun updateBackgroundAssetId(cardId: Long, backgroundAssetId: Long): Result<Int> =
+    override suspend fun updateBackground(cardId: Long, backgroundAssetId: Long, color: Int): Result<Int> =
         ioCatching {
-            cardDao.updateBackgroundAssetId(cardId, backgroundAssetId)
+            cardDao.updateBackground(cardId, backgroundAssetId, color)
         }
 
     override suspend fun updateGlb(cardId: Long, glbFileName: String): Result<Int> =

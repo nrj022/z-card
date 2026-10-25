@@ -11,6 +11,7 @@ import com.zcard.domain.model.CardElementWithAssetKeys
 import com.zcard.domain.bridge.UnityEventStatus
 import com.zcard.domain.bridge.UnityEventType
 import com.zcard.domain.bridge.UnityMessage
+import com.zcard.domain.model.RgbaColor
 import com.zcard.domain.model.TextElement
 import com.zcard.domain.model.UploadState
 import com.zcard.domain.repository.AssetRepository
@@ -81,6 +82,9 @@ class CardEditorViewModel @Inject constructor(
             is CardEditorIntent.ChangeTab -> handleChangeTab(intent.tab)
             is CardEditorIntent.CreateObject -> handleCreateObject(intent.clickedObject)
             is CardEditorIntent.ChangeBackground -> handleChangeBackground(intent.assetId)
+            is CardEditorIntent.SelectBackgroundColor -> handleSelectBackgroundColor(intent.colorHex)
+            is CardEditorIntent.ChangeBackgroundColor -> handleChangeBackgroundColor(intent.colorHex)
+            is CardEditorIntent.DismissColorSelector -> handleDismissColorSelector()
             is CardEditorIntent.SelectSpawnedObject -> handleSelectSpawnedObject(intent.element)
             is CardEditorIntent.DeleteSpawnedObject -> handleDeleteSpawnedObject()
             is CardEditorIntent.EnterTransformMode -> handleEnterTransformMode()
@@ -110,6 +114,14 @@ class CardEditorViewModel @Inject constructor(
                             loadingObjectIds = result.spawnedObjects.map { obj -> obj.cardElement.elementId }.toSet()
                         )
                     }
+                    result.cardData.backgroundColor?.let { color ->
+                        _cardEditorState.update {
+                            it.copy(
+                                backgroundColor = color,
+                                tempBackgroundColor = color
+                            )
+                        }
+                    }
                     observeSpawnedObjects(result.spawnedObjectsFlow)
                     initUnity(result.spawnedObjects, result.texts)
                 }.onFailure {
@@ -123,9 +135,10 @@ class CardEditorViewModel @Inject constructor(
 
     private fun initUnity(spawnedObjects: List<CardElementWithAssetKeys>, texts: List<TextElement>) {
         val bgAssetId = _cardEditorState.value.selectedBackgroundId
+        val bgColor = _cardEditorState.value.backgroundColor
 
         unityBridge.initScene(spawnedObjects, texts)
-        unityChangeBackground(bgAssetId)
+        unityChangeBackground(bgAssetId, bgColor)
     }
 
     private fun observeSpawnedObjects(flow: Flow<Result<List<CardElementWithAssetKeys>>>) {
@@ -219,6 +232,33 @@ class CardEditorViewModel @Inject constructor(
     }
 
     // ── 카드 정보 ─────────────────────────────────────────────────────────────
+    private fun handleSelectBackgroundColor(colorHex: Int) {
+        _cardEditorState.update {
+            it.copy(backgroundColor = colorHex, tempBackgroundColor = colorHex)
+        }
+        viewModelScope.launch {
+            // 색 선택 다이얼로그는 단색 배경이 선택된 상태에서만 열림
+            cardRepository.updateBackground(cardId, _cardEditorState.value.selectedBackgroundId, colorHex)
+        }
+        unityChangeSolidColor(colorHex)
+        updateDialogState(CardEditorState.DialogState.NONE)
+    }
+
+    private fun handleChangeBackgroundColor(colorHex: Int) {
+        _cardEditorState.update {
+            it.copy(tempBackgroundColor = colorHex)
+        }
+        unityChangeSolidColor(colorHex)
+    }
+
+    private fun handleDismissColorSelector() {
+        val originalColor = _cardEditorState.value.backgroundColor
+        _cardEditorState.update {
+            it.copy(tempBackgroundColor = originalColor)
+        }
+        unityChangeSolidColor(originalColor)
+        updateDialogState(CardEditorState.DialogState.NONE)
+    }
 
     private fun handleChangeTitle(newTitle: String) {
         _cardEditorState.update { it.copy(cardTitle = newTitle) }
@@ -307,16 +347,21 @@ class CardEditorViewModel @Inject constructor(
     }
 
     private fun handleChangeBackground(assetId: Long) {
-        val currentBackgroundId = _cardEditorState.value.selectedBackgroundId
-        if (currentBackgroundId == assetId) return
+        if (Asset.isSolidBackground(_cardEditorState.value.selectedBackgroundId) && Asset.isSolidBackground(assetId)) {
+            updateDialogState(CardEditorState.DialogState.COLOR_PICKER)
+            return
+        }
 
-        viewModelScope.launch {
-            cardRepository.updateBackgroundAssetId(cardId, assetId)
+        if (cardEditorState.value.selectedBackgroundId != assetId) {
+            _cardEditorState.update {
+                it.copy(selectedBackgroundId = assetId)
+            }
+            viewModelScope.launch {
+                // 이미지 배경으로 바꿔도 단색으로 돌아올 때 복원되도록 현재 색을 함께 저장
+                cardRepository.updateBackground(cardId, assetId, _cardEditorState.value.backgroundColor)
+            }
+            unityChangeBackground(assetId, _cardEditorState.value.backgroundColor)
         }
-        _cardEditorState.update {
-            it.copy(selectedBackgroundId = assetId)
-        }
-        unityChangeBackground(assetId)
     }
 
     private fun handleSelectSpawnedObject(element: CardElementWithAssetKeys) {
@@ -378,12 +423,20 @@ class CardEditorViewModel @Inject constructor(
         }
     }
 
-    private fun unityChangeBackground(assetId: Long) {
+    private fun unityChangeBackground(assetId: Long, color: Int) {
+        if(Asset.isSolidBackground(assetId)) {
+            unityChangeSolidColor(color)
+            return
+        }
         viewModelScope.launch {
             assetRepository.getAssetById(assetId)
                 .onSuccess { asset ->
                     unityBridge.changeBackground(asset.unityKey)
                 }
         }
+    }
+
+    private fun unityChangeSolidColor(color: Int) {
+        unityBridge.changeBackgroundToSolidColor(RgbaColor.fromArgb(color))
     }
 }

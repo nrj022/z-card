@@ -19,7 +19,7 @@ interface CardRepository {
 
     suspend fun updateCardTitle(cardId: Long, title: String): Result<Int>
 
-    suspend fun updateBackgroundAssetId(cardId: Long, backgroundAssetId: Long): Result<Int>
+    suspend fun updateBackground(cardId: Long, backgroundAssetId: Long, color: Int): Result<Int>
 
     suspend fun updateGlb(cardId: Long, glbFileName: String): Result<Int>
 
