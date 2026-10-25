@@ -15,6 +15,8 @@ interface UnityBridge {
 
     fun changeBackground(backgroundKey: String)
 
+    fun changeBackgroundToSolidColor(rgbaColor: RgbaColor)
+
     fun createObject(
         unityKey: String,
         elementId: Long,
