@@ -14,6 +14,7 @@
     <string name="editor_msg_fail_load_object">오브젝트 불러오기에 실패했어요. 다시 시도해 주세요.</string>
     <string name="editor_msg_fail_card_upload">카드 업로드에 실패했어요. 다시 시도해 주세요.</string>
     <string name="editor_msg_fail_card_title_update">카드 제목 업데이트에 실패했어요. 다시 시도해 주세요.</string>
+    <string name="editor_msg_fail_background_color_update">배경 색상 변경에 실패했어요. 다시 시도해 주세요.</string>
     <string name="editor_msg_block_system_back">편집을 마치려면 상단 버튼을 사용해 주세요</string>
     <string name="editor_msg_copy_success">클립보드에 복사됐어요</string>
     <string name="editor_msg_cancel_card_upload">카드 업로드가 취소됐어요</string>

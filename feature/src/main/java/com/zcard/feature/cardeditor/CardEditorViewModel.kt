@@ -233,15 +233,19 @@ class CardEditorViewModel @Inject constructor(
 
     // ── 카드 정보 ─────────────────────────────────────────────────────────────
     private fun handleSelectBackgroundColor(colorHex: Int) {
-        _cardEditorState.update {
-            it.copy(backgroundColor = colorHex, tempBackgroundColor = colorHex)
-        }
         viewModelScope.launch {
             // 색 선택 다이얼로그는 단색 배경이 선택된 상태에서만 열림
             cardRepository.updateBackground(cardId, _cardEditorState.value.selectedBackgroundId, colorHex)
+                .onSuccess {
+                    _cardEditorState.update {
+                        it.copy(backgroundColor = colorHex, tempBackgroundColor = colorHex)
+                    }
+                    updateDialogState(CardEditorState.DialogState.NONE)
+                }.onFailure {
+                    Log.e(TAG, "handleSelectBackgroundColor: $it")
+                    _cardEditorSideEffect.trySend(CardEditorSideEffect.ToastMessage(R.string.editor_msg_fail_background_color_update))
+                }
         }
-        unityChangeSolidColor(colorHex)
-        updateDialogState(CardEditorState.DialogState.NONE)
     }
 
     private fun handleChangeBackgroundColor(colorHex: Int) {
