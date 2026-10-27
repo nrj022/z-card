@@ -38,6 +38,7 @@
     <string name="editor_cd_delete_text">テキストを削除</string>
     <string name="editor_cd_asset">アセット</string>
     <string name="editor_cd_close_button">閉じる</string>
+    <string name="editor_cd_background_color">背景色を選択</string>
 
     <!-- Editor Screen - Dialog (Delete Object) -->
     <string name="editor_dialog_title_delete">このオブジェクトを削除しますか？</string>

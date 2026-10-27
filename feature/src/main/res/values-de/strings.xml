@@ -38,6 +38,7 @@
     <string name="editor_cd_delete_text">Text löschen</string>
     <string name="editor_cd_asset">Asset</string>
     <string name="editor_cd_close_button">Schließen</string>
+    <string name="editor_cd_background_color">Hintergrundfarbe auswählen</string>
 
     <!-- Editor Screen - Dialog (Delete Object) -->
     <string name="editor_dialog_title_delete">Dieses Objekt löschen?</string>
