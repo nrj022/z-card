@@ -17,7 +17,10 @@ interface AssetDao {
     @Query("SELECT * FROM assets WHERE assetType = 'OBJECT' ORDER BY assetId DESC")
     suspend fun getObjects(): List<AssetEntity>
 
-    @Query("SELECT * FROM assets WHERE assetType = 'BACKGROUND' ORDER BY assetId")
+    @Query("""
+        SELECT * FROM assets WHERE assetType = 'BACKGROUND' 
+        ORDER BY CASE WHEN unityKey = 'bg_solid_color' THEN 0 ELSE 1 END, assetId
+    """)
     suspend fun getBackgrounds(): List<AssetEntity>
 
     @Query("SELECT * FROM assets WHERE assetId = :assetId")

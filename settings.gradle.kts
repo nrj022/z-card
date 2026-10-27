@@ -27,6 +27,9 @@ dependencyResolutionManagement {
 
         google()
         mavenCentral()
+        maven("https://jitpack.io") {
+            content { includeGroup("com.github.nrj022") }
+        }
     }
 }
 include(":core:analytics")

@@ -6,6 +6,7 @@
     <string name="common_button_yes">네</string>
     <string name="common_button_no">아니요</string>
     <string name="common_button_apply">저장</string>
+    <string name="common_button_select">선택</string>
 
     <!-- Editor Screen -->
     <string name="editor_msg_fail_load_card">카드를 불러오지 못했어요. 다시 시도해 주세요.</string>
@@ -13,6 +14,8 @@
     <string name="editor_msg_fail_load_object">오브젝트 불러오기에 실패했어요. 다시 시도해 주세요.</string>
     <string name="editor_msg_fail_card_upload">카드 업로드에 실패했어요. 다시 시도해 주세요.</string>
     <string name="editor_msg_fail_card_title_update">카드 제목 업데이트에 실패했어요. 다시 시도해 주세요.</string>
+    <string name="editor_msg_fail_background_color_update">배경 색상 변경에 실패했어요. 다시 시도해 주세요.</string>
+    <string name="editor_msg_fail_background_update">배경 변경에 실패했어요. 다시 시도해 주세요.</string>
     <string name="editor_msg_block_system_back">편집을 마치려면 상단 버튼을 사용해 주세요</string>
     <string name="editor_msg_copy_success">클립보드에 복사됐어요</string>
     <string name="editor_msg_cancel_card_upload">카드 업로드가 취소됐어요</string>
@@ -37,6 +40,7 @@
     <string name="editor_cd_delete_text">텍스트 삭제</string>
     <string name="editor_cd_asset">에셋</string>
     <string name="editor_cd_close_button">닫기</string>
+    <string name="editor_cd_background_color">배경 색상 선택</string>
 
     <!-- Editor Screen - Dialog (Delete Object) -->
     <string name="editor_dialog_title_delete">이 오브젝트를 삭제할까요?</string>

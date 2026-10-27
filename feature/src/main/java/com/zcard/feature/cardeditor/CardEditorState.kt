@@ -17,6 +17,8 @@ data class CardEditorState(
     val spawnedObjects: List<CardElementWithAssetKeys> = emptyList(),
     val loadingObjectIds: Set<Long> = emptySet(),
     val selectedBackgroundId: Long = 1,
+    val tempBackgroundColor: Int = 0xFFFFFFFF.toInt(),
+    val backgroundColor: Int = 0xFFFFFFFF.toInt(),
     val selectedSpawnedObject: CardElementWithAssetKeys? = null,
 ) {
 
@@ -32,7 +34,7 @@ data class CardEditorState(
     val selectedSpawnedObjectId: Long?
         get() = selectedSpawnedObject?.cardElement?.elementId
 
-    enum class DialogState { NONE, DELETE_CONFIRM, UPLOAD_CANCEL_CONFIRM, CARD_LINK_DETAIL, SET_CARD_TITLE }
+    enum class DialogState { NONE, DELETE_CONFIRM, UPLOAD_CANCEL_CONFIRM, CARD_LINK_DETAIL, SET_CARD_TITLE, COLOR_PICKER }
 
     enum class AssetBrowserTab(val resId: Int) { OBJECTS(R.string.editor_title_asset_tab_objects), BACKGROUND(R.string.editor_title_asset_tab_background) }
 }

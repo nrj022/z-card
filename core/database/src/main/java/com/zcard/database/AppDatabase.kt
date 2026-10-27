@@ -18,7 +18,7 @@ import com.zcard.database.entity.CardEntity
         CardElementEntity::class,
         AssetEntity::class
     ],
-    version = 4,
+    version = 5,
     autoMigrations = [
         AutoMigration(from = 1, to = 2, spec = AppDatabase.GlbTokenDeleteSpec::class),
         AutoMigration(from = 2, to = 3)

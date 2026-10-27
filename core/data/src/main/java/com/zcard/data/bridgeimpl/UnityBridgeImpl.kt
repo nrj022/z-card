@@ -7,6 +7,7 @@ import com.zcard.domain.model.CardElementWithAssetKeys
 import com.zcard.domain.model.RgbaColor
 import com.zcard.domain.model.TextElement
 import com.unity3d.player.UnityPlayer
+import com.zcard.data.mapper.toDto
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -21,6 +22,7 @@ class UnityBridgeImpl @Inject constructor(): UnityBridge {
         const val INIT_SCENE = "InitScene"
         const val RESET_SCENE = "ResetScene"
         const val CHANGE_BACKGROUND = "ChangeBackground"
+        const val CHANGE_BACKGROUND_TO_SOLID_COLOR = "ChangeBackgroundToSolidColor"
 
         const val CREATE_OBJECT = "CreateObject"
         const val CREATE_TEXT = "CreateText"
@@ -63,6 +65,10 @@ class UnityBridgeImpl @Inject constructor(): UnityBridge {
 
     override fun changeBackground(backgroundKey: String) {
         send(Methods.CHANGE_BACKGROUND, backgroundKey)
+    }
+
+    override fun changeBackgroundToSolidColor(rgbaColor: RgbaColor) {
+        send(Methods.CHANGE_BACKGROUND_TO_SOLID_COLOR, rgbaColor.toDto())
     }
 
     override fun createObject(unityKey: String, elementId: Long, element: CardElement) {

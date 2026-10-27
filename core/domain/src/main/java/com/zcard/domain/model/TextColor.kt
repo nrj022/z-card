@@ -10,9 +10,3 @@ enum class TextColor(val rgbaColor: RgbaColor) {
     Yellow(RgbaColor(r = 1f, g = 0.8509804f, b = 0f, a = 1f))
 }
 
-data class RgbaColor(
-    val r: Float,
-    val g: Float,
-    val b: Float,
-    val a: Float
-)

@@ -6,6 +6,7 @@
     <string name="common_button_yes">Sí</string>
     <string name="common_button_no">No</string>
     <string name="common_button_apply">Aplicar</string>
+    <string name="common_button_select">Seleccionar</string>
 
     <!-- Editor Screen -->
     <string name="editor_msg_fail_load_card">No se pudo cargar la tarjeta. Por favor, inténtalo de nuevo.</string>
@@ -13,6 +14,8 @@
     <string name="editor_msg_fail_load_object">No se pudo cargar el objeto. Por favor, inténtalo de nuevo.</string>
     <string name="editor_msg_fail_card_upload">Error al subir la tarjeta. Por favor, inténtalo de nuevo.</string>
     <string name="editor_msg_fail_card_title_update">No se pudo actualizar el título. Por favor, inténtalo de nuevo.</string>
+    <string name="editor_msg_fail_background_color_update">No se pudo cambiar el color de fondo. Por favor, inténtalo de nuevo.</string>
+    <string name="editor_msg_fail_background_update">No se pudo cambiar el fondo. Por favor, inténtalo de nuevo.</string>
     <string name="editor_msg_block_system_back">Usa los botones de arriba para terminar la edición</string>
     <string name="editor_msg_copy_success">Copiado al portapapeles</string>
     <string name="editor_msg_cancel_card_upload">Subida de tarjeta cancelada</string>
@@ -37,6 +40,7 @@
     <string name="editor_cd_delete_text">Eliminar texto</string>
     <string name="editor_cd_asset">Asset</string>
     <string name="editor_cd_close_button">Cerrar</string>
+    <string name="editor_cd_background_color">Seleccionar color de fondo</string>
 
     <!-- Editor Screen - Dialog (Delete Object) -->
     <string name="editor_dialog_title_delete">¿Eliminar este objeto?</string>

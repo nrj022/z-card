@@ -6,6 +6,7 @@
     <string name="common_button_yes">はい</string>
     <string name="common_button_no">いいえ</string>
     <string name="common_button_apply">適用</string>
+    <string name="common_button_select">選択</string>
 
     <!-- Editor Screen -->
     <string name="editor_msg_fail_load_card">カードを読み込めませんでした。もう一度お試しください。</string>
@@ -13,6 +14,8 @@
     <string name="editor_msg_fail_load_object">オブジェクトの読み込みに失敗しました。もう一度お試しください。</string>
     <string name="editor_msg_fail_card_upload">カードのアップロードに失敗しました。もう一度お試しください。</string>
     <string name="editor_msg_fail_card_title_update">タイトルの更新に失敗しました。もう一度お試しください。</string>
+    <string name="editor_msg_fail_background_color_update">背景色の変更に失敗しました。もう一度お試しください。</string>
+    <string name="editor_msg_fail_background_update">背景の変更に失敗しました。もう一度お試しください。</string>
     <string name="editor_msg_block_system_back">編集を終了するには上部のボタンをご利用ください</string>
     <string name="editor_msg_copy_success">クリップボードにコピーしました</string>
     <string name="editor_msg_cancel_card_upload">カードのアップロードがキャンセルされました</string>
@@ -37,6 +40,7 @@
     <string name="editor_cd_delete_text">テキストを削除</string>
     <string name="editor_cd_asset">アセット</string>
     <string name="editor_cd_close_button">閉じる</string>
+    <string name="editor_cd_background_color">背景色を選択</string>
 
     <!-- Editor Screen - Dialog (Delete Object) -->
     <string name="editor_dialog_title_delete">このオブジェクトを削除しますか？</string>
