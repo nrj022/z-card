@@ -15,6 +15,7 @@
     <string name="editor_msg_fail_card_upload">Error al subir la tarjeta. Por favor, inténtalo de nuevo.</string>
     <string name="editor_msg_fail_card_title_update">No se pudo actualizar el título. Por favor, inténtalo de nuevo.</string>
     <string name="editor_msg_fail_background_color_update">No se pudo cambiar el color de fondo. Por favor, inténtalo de nuevo.</string>
+    <string name="editor_msg_fail_background_update">No se pudo cambiar el fondo. Por favor, inténtalo de nuevo.</string>
     <string name="editor_msg_block_system_back">Usa los botones de arriba para terminar la edición</string>
     <string name="editor_msg_copy_success">Copiado al portapapeles</string>
     <string name="editor_msg_cancel_card_upload">Subida de tarjeta cancelada</string>

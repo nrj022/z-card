@@ -357,14 +357,17 @@ class CardEditorViewModel @Inject constructor(
         }
 
         if (cardEditorState.value.selectedBackgroundId != assetId) {
-            _cardEditorState.update {
-                it.copy(selectedBackgroundId = assetId)
-            }
             viewModelScope.launch {
                 // 이미지 배경으로 바꿔도 단색으로 돌아올 때 복원되도록 현재 색을 함께 저장
                 cardRepository.updateBackground(cardId, assetId, _cardEditorState.value.backgroundColor)
+                    .onSuccess {
+                        _cardEditorState.update { it.copy(selectedBackgroundId = assetId) }
+                        unityChangeBackground(assetId, _cardEditorState.value.backgroundColor)
+                    }.onFailure {
+                        Log.e(TAG, "handleChangeBackground: $it")
+                        _cardEditorSideEffect.trySend(CardEditorSideEffect.ToastMessage(R.string.editor_msg_fail_background_update))
+                    }
             }
-            unityChangeBackground(assetId, _cardEditorState.value.backgroundColor)
         }
     }
 
