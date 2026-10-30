@@ -63,12 +63,7 @@
          <span style="font-size: 1.2rem; margin-top: 12px;">Please try again in a moment.</span>
          <span style="font-size: 0.8rem; font-weight: normal; margin-top: 30px;">Create your own 3D card in the it's Z-Card app!</span>
       </div>
-      <script type = "module">   
-         // Import the functions you need from the SDKs you need
-         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-         import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
-         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-
+      <script type = "module">
          // Your web app's Firebase configuration
          // For Firebase JS SDK v7.20.0 and later, measurementId is optional
          const firebaseConfig = {
@@ -81,10 +76,22 @@
             measurementId: "G-5L7TTQ9HPQ"
          };
 
-         const defaultProject = initializeApp(firebaseConfig);
-         const storage = getStorage(defaultProject);
-         const auth = getAuth(defaultProject);
-         
+         // Firebase SDK 로드 실패도 initViewer의 catch에서 처리되도록 동적 import 사용
+         async function loadFirebase() {
+            const [{ initializeApp }, { getStorage, ref, getDownloadURL }, { getAuth, signInAnonymously }] = await Promise.all([
+               import("https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"),
+               import("https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js"),
+               import("https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"),
+            ]);
+
+            const defaultProject = initializeApp(firebaseConfig);
+            return {
+               storage: getStorage(defaultProject),
+               auth: getAuth(defaultProject),
+               ref, getDownloadURL, signInAnonymously
+            };
+         }
+
          function hexToColor4(hex) {
             const clean = hex.replace("#", "");
             const r = parseInt(clean.substring(0, 2), 16) / 255;
@@ -94,7 +101,23 @@
             return new BABYLON.Color4(r, g, b, a);
          }
 
+         function hideLoadingScreen({ fade = false } = {}) {
+            const loadingScreen = document.getElementById("loadingScreen");
+            if (!fade) {
+               loadingScreen.style.display = "none";
+               return;
+            }
+
+            loadingScreen.style.opacity = "0"; // 서서히 투명하게 변경
+
+            // 0.5초(500ms) 뒤에 화면에서 완전히 제거
+            setTimeout(() => {
+               loadingScreen.style.display = "none";
+            }, 500);
+         }
+
          function showCardError() {
+            hideLoadingScreen();
             document.getElementById("cardRenderCanvas").style.display = "none"
             document.getElementById("cardError").style.display = "flex"
          }
@@ -118,6 +141,7 @@
                }
 
                // 2. 익명 로그인 및 URL 가져오기
+               const { storage, auth, ref, getDownloadURL, signInAnonymously } = await loadFirebase();
                const userCredential = await signInAnonymously(auth);
                console.log("Anonymous sign-in successful. UID:", userCredential.user.uid);
                
@@ -152,21 +176,13 @@
                // 4. 모델 로드 (에러 시 직접 showCardError 호출)
                BABYLON.SceneLoader.Append("", modelUrl, scene, 
                   () => { 
-                     console.log("Model loaded successfully"); 
-                     const loadingScreen = document.getElementById("loadingScreen");
-                     
-                     loadingScreen.style.opacity = "0"; // 서서히 투명하게 변경
-                     
-                     // 0.5초(500ms) 뒤에 화면에서 완전히 제거
-                     setTimeout(() => {
-                        loadingScreen.style.display = "none";
-                     }, 500);
-                  }, 
-                  null, 
-                  (scene, message, exception) => { 
+                     console.log("Model loaded successfully");
+                     hideLoadingScreen({ fade: true });
+                  },
+                  null,
+                  (scene, message, exception) => {
                      console.error("Model Load error:", message, exception);
-                     document.getElementById("loadingScreen").style.display = "none";
-                     showCardError(); 
+                     showCardError();
                   }
                );
 
@@ -176,7 +192,6 @@
 
             } catch (error) {
                console.error("Failed to load card:", error);
-               document.getElementById("loadingScreen").style.display = "none";
                showCardError();
             }
          }
