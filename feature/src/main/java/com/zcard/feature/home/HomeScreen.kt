@@ -7,6 +7,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -67,6 +68,8 @@ import com.zcard.feature.home.util.formatDateTime
 import com.zcard.feature.home.util.formatRelativeTime
 import java.io.File
 
+private const val HORIZONTAL_PADDING = 18
+
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.homeState.collectAsStateWithLifecycle(minActiveState = Lifecycle.State.STARTED)
@@ -110,14 +113,19 @@ fun HomeContent(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .systemBarsPadding()
-            .padding(horizontal = 18.dp),
-        topBar = { TopBar(onSettingClick = onSettingClick) },
+            .systemBarsPadding(),
+        topBar = {
+            TopBar(
+                modifier = Modifier.padding(horizontal = HORIZONTAL_PADDING.dp),
+                onSettingClick = onSettingClick
+            )
+        },
     ) {
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(top = it.calculateTopPadding(), bottom = it.calculateBottomPadding()),
+            contentPadding = PaddingValues(horizontal = HORIZONTAL_PADDING.dp),
             columns = GridCells.Fixed(3),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -172,9 +180,9 @@ fun HomeContent(
 }
 
 @Composable
-fun TopBar(onSettingClick: () -> Unit = {}) {
+fun TopBar(modifier: Modifier, onSettingClick: () -> Unit = {}) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -282,16 +290,20 @@ fun CardItem(cardTitle: String, updatedAt: String, thumbnailFile: File?, thumbna
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(25.dp))
-                .combinedClickable(
-                    onClick = { onClick() },
-                    onLongClick = { onLongClick() },
-                ),
+                .aspectRatio(1f),
             shape = RoundedCornerShape(25.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
         ) {
-            Box(contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(25.dp))
+                    .combinedClickable(
+                        onClick = { onClick() },
+                        onLongClick = { onLongClick() },
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
                 if(thumbnailFile != null) {
                     AsyncImage(
                         modifier = Modifier.fillMaxSize(),
@@ -471,6 +483,6 @@ fun DeleteConfirmDialog(
 @Composable
 fun HomeScreenPreview() {
     ZCardTheme {
-        HomeContent()
+        HomeContent(cardPreviews = listOf(CardPreview(0, "0", 0)))
     }
 }
