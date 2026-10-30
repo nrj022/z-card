@@ -1,5 +1,7 @@
 package com.zcard.feature.cardeditor
 
+import androidx.compose.ui.graphics.toArgb
+import com.zcard.designsystem.theme.ZOrange100
 import com.zcard.domain.model.CardElementWithAssetKeys
 import com.zcard.domain.model.Asset
 import com.zcard.feature.R
@@ -17,8 +19,8 @@ data class CardEditorState(
     val spawnedObjects: List<CardElementWithAssetKeys> = emptyList(),
     val loadingObjectIds: Set<Long> = emptySet(),
     val selectedBackgroundId: Long = 1,
-    val tempBackgroundColor: Int = 0xFFFFFFFF.toInt(),
-    val backgroundColor: Int = 0xFFFFFFFF.toInt(),
+    val tempBackgroundColor: Int = ZOrange100.toArgb(),
+    val backgroundColor: Int = ZOrange100.toArgb(),
     val selectedSpawnedObject: CardElementWithAssetKeys? = null,
 ) {
 
