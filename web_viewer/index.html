@@ -6,12 +6,44 @@
       <script src="https://cdn.babylonjs.com/babylon.max.js"></script>
       <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>    
       <style>
-        body { margin: 0; }
-        canvas { width: 100%; height: 100vh; }
-      </style>
+  body { margin: 0; }
+  canvas { width: 100%; height: 100vh; }
+
+  #loadingScreen {
+     position: absolute;
+     top: 0; left: 0;
+     width: 100%; height: 100%;
+     background-color: #FFFFFF;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     z-index: 500;
+
+     opacity: 1;
+     transition: opacity 0.5s ease; /* 0.5초 동안 부드럽게 투명해짐 */
+  }
+
+  .spinner {
+     width: 80px;
+     height: 80px;
+     border: 10px solid #EDEDED;
+     border-top-color: #969696;
+     border-radius: 50%;
+     animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+     to { transform: rotate(360deg); }
+  }
+</style>
    </head>
 
    <body style="background-color: #DEDEDE">
+      <div id="loadingScreen">
+         <div class="spinner"></div>
+      </div>
+
       <canvas id = "cardRenderCanvas"></canvas>
       <div id="cardError" style="
          position: absolute;
@@ -115,12 +147,25 @@
                   scene.createDefaultSkybox(hdrTexture, true);
                }
 
+               BABYLON.SceneLoader.ShowLoadingScreen = false;
+               
                // 4. 모델 로드 (에러 시 직접 showCardError 호출)
                BABYLON.SceneLoader.Append("", modelUrl, scene, 
-                  () => { console.log("Model loaded successfully"); }, 
+                  () => { 
+                     console.log("Model loaded successfully"); 
+                     const loadingScreen = document.getElementById("loadingScreen");
+                     
+                     loadingScreen.style.opacity = "0"; // 서서히 투명하게 변경
+                     
+                     // 0.5초(500ms) 뒤에 화면에서 완전히 제거
+                     setTimeout(() => {
+                        loadingScreen.style.display = "none";
+                     }, 500);
+                  }, 
                   null, 
                   (scene, message, exception) => { 
                      console.error("Model Load error:", message, exception);
+                     document.getElementById("loadingScreen").style.display = "none";
                      showCardError(); 
                   }
                );
@@ -131,6 +176,7 @@
 
             } catch (error) {
                console.error("Failed to load card:", error);
+               document.getElementById("loadingScreen").style.display = "none";
                showCardError();
             }
          }
