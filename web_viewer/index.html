@@ -190,22 +190,16 @@
 
                BABYLON.SceneLoader.ShowLoadingScreen = false;
                
-               // 4. 모델 로드 (에러 시 직접 showCardError 호출)
-               BABYLON.SceneLoader.Append("", modelUrl, scene, 
-                  () => { 
-                     console.log("Model loaded successfully");
-                     hideLoadingScreen({ fade: true });
-                  },
-                  null,
-                  (scene, message, exception) => {
-                     console.error("Model Load error:", message, exception);
-                     showCardError();
-                  }
-               );
-
-               // 5. 렌더 루프 및 리사이즈 이벤트
-               engine.runRenderLoop(() => { scene.render(); });  
+               // 4. 렌더 루프 및 리사이즈 이벤트
+               engine.runRenderLoop(() => { scene.render(); });
                window.addEventListener("resize", () => engine.resize());
+
+               // 5. 모델 로드 후 환경 텍스처까지 준비되면 로딩 화면 제거 (실패 시 catch에서 처리)
+               await BABYLON.SceneLoader.AppendAsync("", modelUrl, scene);
+               console.log("Model loaded successfully");
+
+               await scene.whenReadyAsync();
+               hideLoadingScreen({ fade: true });
 
             } catch (error) {
                console.error("Failed to load card:", error);
