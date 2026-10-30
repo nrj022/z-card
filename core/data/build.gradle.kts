@@ -37,7 +37,7 @@ android {
 
 dependencies {
 
-    implementation(group="", name = "unityLibrary-release", ext = "aar")
+    implementation(libs.unity)
     implementation(project(":core:database"))
     implementation(project(":core:domain"))
 
