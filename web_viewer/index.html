@@ -53,6 +53,15 @@
          const storage = getStorage(defaultProject);
          const auth = getAuth(defaultProject);
          
+         function hexToColor4(hex) {
+            const clean = hex.replace("#", "");
+            const r = parseInt(clean.substring(0, 2), 16) / 255;
+            const g = parseInt(clean.substring(2, 4), 16) / 255;
+            const b = parseInt(clean.substring(4, 6), 16) / 255;
+            const a = clean.length >= 8 ? parseInt(clean.substring(6, 8), 16) / 255 : 1;
+            return new BABYLON.Color4(r, g, b, a);
+         }
+
          function showCardError() {
             document.getElementById("cardRenderCanvas").style.display = "none"
             document.getElementById("cardError").style.display = "flex"
@@ -68,6 +77,8 @@
 
                const decodedGlbFileName = urlParams.get("glb")
                const bgFileName = urlParams.get("bg") ?? "bg_001";
+               const isSolidColorBg = bgFileName === "bg_solid_color";
+               const bgColorHex = urlParams.get("bgColor");
                const bgUrl = `./${bgFileName}.env`;
 
                if(!decodedGlbFileName) {
@@ -97,8 +108,12 @@
                const light = new BABYLON.HemisphericLight("mainLight", new BABYLON.Vector3(1, 0.5, 0), scene);
                light.intensity = 0.8;
 
-               const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(bgUrl, scene);
-               scene.createDefaultSkybox(hdrTexture, true);
+               if (isSolidColorBg) {
+                  scene.clearColor = hexToColor4(bgColorHex ?? "ffffff");
+               } else {
+                  const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(bgUrl, scene);
+                  scene.createDefaultSkybox(hdrTexture, true);
+               }
 
                // 4. 모델 로드 (에러 시 직접 showCardError 호출)
                BABYLON.SceneLoader.Append("", modelUrl, scene, 
