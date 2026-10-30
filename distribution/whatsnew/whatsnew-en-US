@@ -1,7 +1,8 @@
-v1.10.0 Updates
-Dark mode just got a lot more comfortable!
-- Every screen, including Home, Card Editor, Text Editor, Share, Settings, and Tutorial, now fully supports dark mode
-- Fixed screens that stayed bright or had hard-to-read text and icons in dark mode
-- Refreshed colors throughout the app to match our new design
+v1.11.0 Updates
+Your cards can now have any background color you like!
+- Pick any color from the Background tab in the Card Editor to use as a solid background
+- See your card update live as you choose a color
+- Shared card links show your chosen background color too
+- Fixed card shadows on the Home screen that were hard to see
 
 We recommend keeping your app up to date for the best experience :)
