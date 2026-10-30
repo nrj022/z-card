@@ -37,6 +37,7 @@ cardview = "1.0.0"
 activity = "1.12.1"
 robolectric = "4.17"
 roborazzi = "1.60.0" # 1.61+는 Kotlin 2.3 메타데이터로 빌드되어 Kotlin 2.0.21에서 사용 불가
+unity = "1.0.0"
 
 [libraries]
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
@@ -95,6 +96,7 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 # Screenshot test
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
+unity = { module = "com.zcard:unity", version.ref = "unity" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -57,8 +57,7 @@ tasks.withType<Test>().configureEach {
 }
 
 dependencies {
-
-    implementation(group="", name = "unityLibrary-release", ext = "aar")
+    implementation(libs.unity)
     implementation(project(":core:designsystem"))
     implementation(project(":core:domain"))
 

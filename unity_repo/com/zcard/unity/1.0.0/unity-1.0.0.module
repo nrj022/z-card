@@ -1,0 +1,67 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.zcard",
+    "module": "unity",
+    "version": "1.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "unity-1.0.0.aar",
+          "url": "unity-1.0.0.aar",
+          "size": 109198625,
+          "sha512": "11f144d84a7789a83018557a0ddc17779fbf2a0913450b9f6f208ace1ed89faec28d0f43843968f931c1727a816e19623324d272a1ca6016637a987dc9261848",
+          "sha256": "b50d959ac68eb457589288e83580cc734dbeb0a81631866c8a230ae1a824f02f",
+          "sha1": "330d8d81538a26f164611fcf8ca6a6a701a0d13b",
+          "md5": "b1a5e8e598acf97a1f00fc2608e0ba0c"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.games",
+          "module": "games-frame-pacing",
+          "version": {
+            "requires": "2.1.2"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "unity-1.0.0.aar",
+          "url": "unity-1.0.0.aar",
+          "size": 109198625,
+          "sha512": "11f144d84a7789a83018557a0ddc17779fbf2a0913450b9f6f208ace1ed89faec28d0f43843968f931c1727a816e19623324d272a1ca6016637a987dc9261848",
+          "sha256": "b50d959ac68eb457589288e83580cc734dbeb0a81631866c8a230ae1a824f02f",
+          "sha1": "330d8d81538a26f164611fcf8ca6a6a701a0d13b",
+          "md5": "b1a5e8e598acf97a1f00fc2608e0ba0c"
+        }
+      ]
+    }
+  ]
+}

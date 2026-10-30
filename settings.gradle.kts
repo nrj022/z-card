@@ -1,8 +1,12 @@
 rootProject.name = "Z Card"
 include(":app")
-include(":unityLibrary")
-project(":unityLibrary").projectDir = File("unity_export/unityLibrary")
-include(":unityLibrary:mobilenotifications.androidlib")
+include(":core:analytics")
+include(":core:data")
+include(":core:database")
+include(":core:designsystem")
+include(":core:domain")
+include(":core:network")
+include(":feature")
 
 pluginManagement {
     repositories {
@@ -21,21 +25,11 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
-        flatDir {
-            dirs(rootProject.projectDir.resolve("libs"))
-        }
-
         google()
         mavenCentral()
         maven("https://jitpack.io") {
             content { includeGroup("com.github.nrj022") }
         }
+        maven { url = uri("unity_repo") }
     }
 }
-include(":core:analytics")
-include(":core:database")
-include(":core:designsystem")
-include(":core:data")
-include(":core:domain")
-include(":feature")
-include(":core:network")
