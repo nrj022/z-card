@@ -148,7 +148,7 @@
                const bgFileName = urlParams.get("bg") ?? "bg_001";
                const isSolidColorBg = bgFileName === "bg_solid_color";
                const bgColorHex = urlParams.get("bgColor");
-               const bgUrl = `./${bgFileName}.env`;
+               const bgUrl = isSolidColorBg ? "./bg_001.env" : `./${bgFileName}.env`;
 
                if(!decodedGlbFileName) {
                   throw new Error("Missing glb parameter in URL");
@@ -178,10 +178,13 @@
                const light = new BABYLON.HemisphericLight("mainLight", new BABYLON.Vector3(1, 0.5, 0), scene);
                light.intensity = 0.8;
 
+               // 단색 배경도 PBR 재질 반사를 위해 환경 텍스처는 유지하고 스카이박스만 생략
+               const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(bgUrl, scene);
+               scene.environmentTexture = hdrTexture;
+
                if (isSolidColorBg) {
                   scene.clearColor = hexToColor4(bgColorHex ?? "ffffff");
                } else {
-                  const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(bgUrl, scene);
                   scene.createDefaultSkybox(hdrTexture, true);
                }
 
